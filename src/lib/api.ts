@@ -36,7 +36,7 @@ class ApiClient {
     });
 
     if (res.status === 401) {
-      if (typeof window !== "undefined" && !window.location.pathname.startsWith("/login") && !window.location.pathname.startsWith("/auth")) {
+      if (typeof window !== "undefined" && window.location.pathname.startsWith("/dashboard")) {
         window.location.href = "/login";
       }
       throw new Error("Unauthorized");
