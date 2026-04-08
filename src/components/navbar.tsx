@@ -9,7 +9,6 @@ import {
   Menu,
   X,
   Cpu,
-  Terminal,
   Code2,
   FileSearch,
   BookOpen,
@@ -54,12 +53,6 @@ const navItems: NavItem[] = [
         href: "/product/editor",
         description: "VS Code fork with native AI built in",
         icon: Code2,
-      },
-      {
-        label: "Terminal",
-        href: "/product/terminal",
-        description: "Terminal-first workflow with PTY support",
-        icon: Terminal,
       },
       {
         label: "Code Search",
