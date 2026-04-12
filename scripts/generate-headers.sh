@@ -17,7 +17,7 @@ cat > public/_headers << HEADERS_EOF
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), gyroscope=(), accelerometer=(), magnetometer=(), payment=(), usb=(), autoplay=(), fullscreen=(self)
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; font-src 'self'; connect-src 'self' ${API_ORIGIN} https://*.supabase.co wss://*.supabase.co https://*.ingest.us.sentry.io https://cloudflareinsights.com; worker-src 'self' blob:; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com https://avatars.githubusercontent.com https://lh3.googleusercontent.com; font-src 'self'; connect-src 'self' ${API_ORIGIN} https://*.supabase.co wss://*.supabase.co https://*.ingest.us.sentry.io https://cloudflareinsights.com; worker-src 'self' blob:; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'
 HEADERS_EOF
 
 echo "Generated public/_headers with API_ORIGIN=${API_ORIGIN}"
