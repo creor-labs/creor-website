@@ -31,15 +31,11 @@ import {
   SoftwareApplicationSchema,
 } from "@/components/structured-data";
 import { TerminalDemo } from "@/components/terminal-demo";
+import { ProviderMarquee } from "@/components/provider-marquee";
 
 /* ─── Data ─── */
 
-const stats = [
-  { value: "19+", label: "LLM Providers" },
-  { value: "32+", label: "Built-in Tools" },
-  { value: "15+", label: "MCP Integrations" },
-  { value: "<100ms", label: "Agent Routing" },
-];
+/* stats row removed — replaced by ProviderMarquee */
 
 const pillars = [
   {
@@ -210,27 +206,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Stats ── */}
-      <section className="border-y border-border">
-        <div className="mx-auto grid max-w-[1080px] grid-cols-2 sm:grid-cols-4">
-          {stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className={cn(
-                "px-6 py-10 text-center",
-                i < stats.length - 1 && "border-r border-border"
-              )}
-            >
-              <p className="text-3xl font-bold tracking-tight sm:text-4xl">
-                {stat.value}
-              </p>
-              <p className="mt-1.5 text-[12px] text-muted-foreground">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* ── Provider Marquee ── */}
+      <ProviderMarquee />
 
       {/* ── 3 Pillars ── */}
       <section className="px-6 py-24 sm:py-32">
