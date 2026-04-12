@@ -33,6 +33,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="darkreader-lock" />
+        <link rel="icon" href="/logo_creor.png" type="image/png" sizes="512x512" />
+        <link rel="apple-touch-icon" href="/logo_creor.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} font-sans antialiased`}
