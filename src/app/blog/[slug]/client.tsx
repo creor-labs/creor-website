@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { BlogPostLayout } from "@/components/blog/blog-post-layout";
@@ -58,12 +59,12 @@ export function BlogPostClient() {
           <p className="mt-3 text-foreground-secondary">
             The blog post you&apos;re looking for doesn&apos;t exist.
           </p>
-          <a
+          <Link
             href="/blog"
             className="mt-8 inline-flex items-center rounded-full bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90"
           >
             Back to Blog
-          </a>
+          </Link>
         </div>
         <Footer />
       </div>
