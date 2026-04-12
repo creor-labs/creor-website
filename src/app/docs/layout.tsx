@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Search, ChevronRight, ChevronDown } from "lucide-react";
@@ -244,20 +245,13 @@ export default function DocsLayout({
       <header className="sticky top-0 z-50 flex h-[52px] items-center justify-between border-b border-[#222222] bg-[#0E0E0E]/95 px-4 backdrop-blur-md">
         <div className="flex h-full items-center gap-6">
           <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-[#EDEDED]"
-            >
-              <polyline points="16 18 22 12 16 6" />
-              <polyline points="8 6 2 12 8 18" />
-            </svg>
+            <Image
+              src="/creor-nobg-icon.png"
+              alt="Creor"
+              width={20}
+              height={20}
+              className="invert"
+            />
             <span className="text-[15px] font-semibold tracking-tight">Creor</span>
           </Link>
           <nav className="hidden h-full items-center gap-1 md:flex">
