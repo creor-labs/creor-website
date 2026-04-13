@@ -249,54 +249,82 @@ function SkillsRulesVisual() {
 
 function ToolsMCPVisual() {
   const tools = [
-    { name: "read", desc: "Read files" },
-    { name: "edit", desc: "Edit files" },
-    { name: "bash", desc: "Run commands" },
-    { name: "grep", desc: "Search code" },
-    { name: "glob", desc: "Find files" },
-    { name: "lsp", desc: "Go to def" },
+    { name: "read", desc: "Read files", icon: "📄" },
+    { name: "edit", desc: "Edit files", icon: "✏️" },
+    { name: "write", desc: "Create files", icon: "📝" },
+    { name: "bash", desc: "Run commands", icon: "⌨️" },
+    { name: "grep", desc: "Search content", icon: "🔍" },
+    { name: "glob", desc: "Find files", icon: "📂" },
+    { name: "lsp", desc: "Go to definition", icon: "🔗" },
+    { name: "git", desc: "Version control", icon: "🌿" },
+    { name: "web", desc: "Fetch URLs", icon: "🌐" },
   ];
 
   const mcpServers = [
-    { name: "GitHub", status: "connected" },
-    { name: "Notion", status: "connected" },
-    { name: "Slack", status: "disabled" },
+    { name: "GitHub", icon: "GH", status: "connected", desc: "PRs, issues, actions" },
+    { name: "Notion", icon: "N", status: "connected", desc: "Pages, databases" },
+    { name: "Slack", icon: "S", status: "connected", desc: "Messages, channels" },
+    { name: "Linear", icon: "L", status: "disabled", desc: "Issues, projects" },
   ];
 
   return (
-    <div className="grid gap-8 md:grid-cols-[1.2fr_1fr]">
+    <div className="grid items-start gap-10 md:grid-cols-2">
       {/* Tools grid */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
-          Built-in Tools
-        </span>
-        <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
+        <div className="mb-3 flex items-center justify-between">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-white/35">
+            Built-in Tools
+          </span>
+          <span className="rounded-full bg-white/[0.06] px-2 py-0.5 font-mono text-[9px] text-white/30">
+            25+ tools
+          </span>
+        </div>
+        <div className="grid grid-cols-3 gap-1.5">
           {tools.map((tool) => (
             <div
               key={tool.name}
-              className="rounded-lg bg-white/[0.06] px-3 py-2"
+              className="group rounded-lg border border-white/[0.06] bg-white/[0.04] px-3 py-2.5 transition-colors hover:border-white/[0.12] hover:bg-white/[0.06]"
             >
+              <div className="mb-1 text-[13px]">{tool.icon}</div>
               <div className="font-mono text-[11px] text-white/50">
                 {tool.name}
               </div>
-              <div className="text-[9px] text-white/30">{tool.desc}</div>
+              <div className="text-[9px] text-white/25">{tool.desc}</div>
             </div>
           ))}
+        </div>
+        <div className="mt-1.5 rounded-lg border border-dashed border-white/[0.08] py-2 text-center font-mono text-[10px] text-white/25">
+          +16 more tools
         </div>
       </div>
 
       {/* MCP servers */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
-          MCP Servers
-        </span>
+        <div className="mb-3 flex items-center justify-between">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-white/35">
+            MCP Servers
+          </span>
+          <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] text-emerald-400/50">
+            3 connected
+          </span>
+        </div>
         <div className="space-y-1.5">
           {mcpServers.map((server) => (
             <div
               key={server.name}
-              className="flex items-center justify-between rounded-lg bg-white/[0.06] px-3 py-2.5"
+              className="flex items-center gap-3 rounded-lg border border-white/[0.06] bg-white/[0.04] px-3 py-2.5 transition-colors hover:border-white/[0.12] hover:bg-white/[0.06]"
             >
-              <span className="text-[11px] text-white/45">{server.name}</span>
+              <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[10px] font-bold ${
+                server.status === "connected"
+                  ? "bg-white/[0.08] text-white/60"
+                  : "bg-white/[0.04] text-white/25"
+              }`}>
+                {server.icon}
+              </div>
+              <div className="flex-1">
+                <div className="text-[11px] text-white/50">{server.name}</div>
+                <div className="text-[9px] text-white/20">{server.desc}</div>
+              </div>
               <span className="flex items-center gap-1.5 text-[9px]">
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${
@@ -305,12 +333,15 @@ function ToolsMCPVisual() {
                       : "bg-white/15"
                   }`}
                 />
-                <span className="text-white/35">{server.status}</span>
+                <span className={server.status === "connected" ? "text-emerald-400/40" : "text-white/25"}>
+                  {server.status}
+                </span>
               </span>
             </div>
           ))}
-          <div className="rounded-lg border border-dashed border-white/[0.12] px-3 py-2 text-center text-[10px] text-white/30">
-            + Add Server
+          <div className="flex items-center justify-center gap-1.5 rounded-lg border border-dashed border-white/[0.10] py-2.5 text-[10px] text-white/25 transition-colors hover:border-white/[0.15] hover:text-white/35">
+            <span className="text-[14px] leading-none">+</span>
+            Add MCP Server
           </div>
         </div>
       </div>
