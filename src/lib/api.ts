@@ -116,6 +116,16 @@ class ApiClient {
     }>("/api/users/me");
   }
 
+  // ── User Preferences ──
+
+  async getPreferences() {
+    return this.get<{ emailProductUpdates?: boolean }>("/api/users/me/preferences");
+  }
+
+  async updatePreferences(prefs: { emailProductUpdates?: boolean }) {
+    return this.patch<{ emailProductUpdates?: boolean }>("/api/users/me/preferences", prefs);
+  }
+
   // ── Workspace ──
 
   async getWorkspace() {

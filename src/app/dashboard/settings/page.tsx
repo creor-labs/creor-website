@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/lib/auth";
+import { api } from "@/lib/api";
 import {
   Loader2,
   AlertTriangle,
@@ -12,23 +13,37 @@ import {
   CheckCircle2,
   ArrowUpCircle,
 } from "lucide-react";
-import { api } from "@/lib/api";
 
-const GITHUB_REPO = "modhisathvik7733/creor-app";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 /* ── Notifications Section ── */
 
 function NotificationsSection() {
-  const [productUpdates, setProductUpdates] = useState(() => {
-    if (typeof window === "undefined") return true;
-    const stored = localStorage.getItem("creor_notify_product_updates");
-    return stored === null ? true : stored === "true";
-  });
+  const [productUpdates, setProductUpdates] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  const handleToggle = () => {
+  useEffect(() => {
+    api
+      .getPreferences()
+      .then((prefs) => {
+        setProductUpdates(prefs.emailProductUpdates ?? true);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleToggle = async () => {
     const next = !productUpdates;
     setProductUpdates(next);
-    localStorage.setItem("creor_notify_product_updates", String(next));
+    setSaving(true);
+    try {
+      await api.updatePreferences({ emailProductUpdates: next });
+    } catch {
+      setProductUpdates(!next); // revert on failure
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -50,18 +65,23 @@ function NotificationsSection() {
               New features, improvements, and announcements
             </p>
           </div>
-          <button
-            onClick={handleToggle}
-            className={`relative h-6 w-11 rounded-full transition-colors ${
-              productUpdates ? "bg-indigo-500" : "bg-muted"
-            }`}
-          >
-            <span
-              className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
-                productUpdates ? "translate-x-5" : "translate-x-0"
+          {loading ? (
+            <div className="h-6 w-11 rounded-full bg-muted animate-pulse" />
+          ) : (
+            <button
+              onClick={handleToggle}
+              disabled={saving}
+              className={`relative h-6 w-11 rounded-full transition-colors disabled:opacity-70 ${
+                productUpdates ? "bg-indigo-500" : "bg-muted"
               }`}
-            />
-          </button>
+            >
+              <span
+                className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                  productUpdates ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -74,7 +94,8 @@ interface ReleaseInfo {
   version: string;
   publishedAt: string;
   notes: string;
-  url: string;
+  releaseUrl: string;
+  downloads: Record<string, string>;
 }
 
 function IDEVersionSection() {
@@ -84,18 +105,10 @@ function IDEVersionSection() {
 
   const fetchLatest = useCallback(async () => {
     try {
-      const res = await fetch(
-        `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`,
-        { headers: { Accept: "application/vnd.github.v3+json" } },
-      );
+      const res = await fetch(`${API_BASE}/api/update/latest`);
       if (!res.ok) throw new Error();
       const data = await res.json();
-      setRelease({
-        version: (data.tag_name as string).replace(/^v/, ""),
-        publishedAt: data.published_at,
-        notes: data.body ?? "",
-        url: data.html_url,
-      });
+      setRelease(data);
     } catch {
       setError(true);
     } finally {
@@ -107,21 +120,25 @@ function IDEVersionSection() {
     fetchLatest();
   }, [fetchLatest]);
 
-  const formatDate = (iso: string) => {
-    return new Date(iso).toLocaleDateString("en-US", {
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     });
-  };
 
-  // Extract first 2-3 lines from release notes for preview
-  const previewNotes = (notes: string) => {
-    const lines = notes
+  const previewNotes = (notes: string) =>
+    notes
       .split("\n")
       .map((l) => l.trim())
-      .filter((l) => l && !l.startsWith("#"));
-    return lines.slice(0, 3);
+      .filter((l) => l && !l.startsWith("#"))
+      .slice(0, 3);
+
+  const PLATFORM_LABELS: Record<string, string> = {
+    "darwin-arm64": "macOS (Apple Silicon)",
+    "darwin-x64": "macOS (Intel)",
+    "win32-x64": "Windows",
+    "linux-x64": "Linux",
   };
 
   return (
@@ -166,7 +183,7 @@ function IDEVersionSection() {
                 </div>
               </div>
               <a
-                href={release.url}
+                href={release.releaseUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
@@ -197,21 +214,20 @@ function IDEVersionSection() {
 
             {/* Download buttons */}
             <div className="flex flex-wrap gap-2">
-              {[
-                { label: "macOS (Apple Silicon)", asset: "Creor-darwin-arm64.zip" },
-                { label: "macOS (Intel)", asset: "Creor-darwin-x64.zip" },
-                { label: "Windows", asset: "Creor-win32-x64.zip" },
-                { label: "Linux", asset: "Creor-linux-x64.tar.gz" },
-              ].map((dl) => (
-                <a
-                  key={dl.asset}
-                  href={`https://github.com/${GITHUB_REPO}/releases/latest/download/${dl.asset}`}
-                  className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                >
-                  <Download className="h-3 w-3" />
-                  {dl.label}
-                </a>
-              ))}
+              {Object.entries(PLATFORM_LABELS).map(([platform, label]) => {
+                const url = release.downloads[platform];
+                if (!url) return null;
+                return (
+                  <a
+                    key={platform}
+                    href={url}
+                    className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  >
+                    <Download className="h-3 w-3" />
+                    {label}
+                  </a>
+                );
+              })}
             </div>
           </div>
         ) : null}
@@ -332,9 +348,7 @@ export default function AccountPage() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold tracking-tight">Account</h1>
-        <p className="mt-1 text-muted-foreground">
-          Manage your account
-        </p>
+        <p className="mt-1 text-muted-foreground">Manage your account</p>
       </div>
 
       <div className="max-w-2xl space-y-6">
