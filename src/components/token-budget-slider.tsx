@@ -70,7 +70,7 @@ export function TokenBudgetSlider() {
               transition: dragging.current ? "none" : "left 0.15s ease-out",
             }}
           >
-            <div className="-ml-2 h-4 w-4 rounded-full border-2 border-indigo-400/80 bg-indigo-500/40 shadow-[0_0_8px_rgba(129,140,248,0.5)]" />
+            <div className="-ml-2 h-4 w-4 rounded-full border-2 border-indigo-400/60 bg-indigo-500/30" />
           </div>
         </div>
         <span className="w-14 text-right font-mono text-[11px] tabular-nums text-white/45">
