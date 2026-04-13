@@ -1,5 +1,6 @@
 import { FadeIn } from "@/components/fade-in";
 import { TokenBudgetSlider } from "@/components/token-budget-slider";
+import { AnimatedDiffPreview } from "@/components/animated-diff";
 import { ArrowRight } from "lucide-react";
 
 /* ── Section 1: Agent Cards ── */
@@ -533,69 +534,7 @@ function SnapshotDiffVisual() {
       </div>
 
       {/* Diff preview */}
-      <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
-          Diff Preview
-        </span>
-        <div className="overflow-hidden rounded-lg border border-white/[0.06] bg-[#0a0a0c] font-mono text-[10px]">
-          {/* Diff header */}
-          <div className="flex items-center justify-between border-b border-white/[0.04] px-3 py-1.5">
-            <span className="text-white/40">src/middleware/auth.ts</span>
-            <div className="flex gap-2">
-              <span className="text-emerald-400/70">+12</span>
-              <span className="text-red-400/70">-3</span>
-            </div>
-          </div>
-          {/* Diff lines */}
-          <div className="space-y-0 p-0">
-            <div className="px-3 py-0.5 text-white/35">
-              <span className="mr-3 text-white/20">14</span>
-              export function authMiddleware(req, res, next) {"{"}
-            </div>
-            <div className="border-l-2 border-red-400/50 bg-red-500/[0.10] px-3 py-0.5 text-white/40">
-              <span className="mr-3 text-red-400/50">15</span>
-              {"  "}const token = req.headers.auth
-            </div>
-            <div className="border-l-2 border-emerald-400/50 bg-emerald-500/[0.10] px-3 py-0.5 text-white/50">
-              <span className="mr-3 text-emerald-400/50">15</span>
-              {"  "}const token = req.headers.authorization?.split(&quot; &quot;)[1]
-            </div>
-            <div className="border-l-2 border-emerald-400/50 bg-emerald-500/[0.10] px-3 py-0.5 text-white/50">
-              <span className="mr-3 text-emerald-400/50">16</span>
-              {"  "}if (!token) return res.status(401).json({"{"} error: &quot;Unauthorized&quot; {"}"})
-            </div>
-            <div className="px-3 py-0.5 text-white/35">
-              <span className="mr-3 text-white/20">17</span>
-              {"  "}try {"{"}
-            </div>
-            <div className="border-l-2 border-red-400/50 bg-red-500/[0.10] px-3 py-0.5 text-white/40">
-              <span className="mr-3 text-red-400/50">18</span>
-              {"    "}const user = verify(token)
-            </div>
-            <div className="border-l-2 border-emerald-400/50 bg-emerald-500/[0.10] px-3 py-0.5 text-white/50">
-              <span className="mr-3 text-emerald-400/50">18</span>
-              {"    "}const user = await verifyJWT(token, SECRET)
-            </div>
-            <div className="border-l-2 border-emerald-400/50 bg-emerald-500/[0.10] px-3 py-0.5 text-white/50">
-              <span className="mr-3 text-emerald-400/50">19</span>
-              {"    "}req.user = {"{"} id: user.sub, role: user.role {"}"}
-            </div>
-            <div className="px-3 py-0.5 text-white/35">
-              <span className="mr-3 text-white/20">20</span>
-              {"    "}next()
-            </div>
-          </div>
-          {/* Accept/reject bar */}
-          <div className="flex items-center justify-end gap-2 border-t border-white/[0.04] px-3 py-1.5">
-            <span className="rounded border border-white/[0.12] px-2 py-0.5 text-[9px] text-white/35">
-              Reject
-            </span>
-            <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] text-emerald-400/60">
-              Accept
-            </span>
-          </div>
-        </div>
-      </div>
+      <AnimatedDiffPreview />
     </div>
   );
 }
