@@ -2,6 +2,7 @@ import { FadeIn } from "@/components/fade-in";
 import { TokenBudgetSlider } from "@/components/token-budget-slider";
 import { AnimatedRepoMap } from "@/components/animated-repo-map";
 import { AnimatedSkillGraph } from "@/components/animated-skill-graph";
+import { AnimatedRules } from "@/components/animated-rules";
 import { AnimatedDiffPreview } from "@/components/animated-diff";
 
 
@@ -233,45 +234,13 @@ function RepoMapVisual() {
 /* ── Visual: Skills & Rules ── */
 
 function SkillsRulesVisual() {
-  const rules = [
-    { name: "code-style.md", always: true },
-    { name: "security-policy.md", always: true },
-    { name: "api-guidelines.md", always: false },
-    { name: "testing-patterns.md", always: false },
-  ];
-
   return (
     <div className="grid gap-8 md:grid-cols-2">
       {/* Skill graph */}
       <AnimatedSkillGraph />
 
-      {/* Rules list */}
-      <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
-          Rules
-        </span>
-        <div className="space-y-1.5">
-          {rules.map((rule) => (
-            <div
-              key={rule.name}
-              className="flex items-center justify-between rounded-lg bg-white/[0.06] px-3 py-2"
-            >
-              <span className="font-mono text-[11px] text-white/45">
-                {rule.name}
-              </span>
-              <span
-                className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${
-                  rule.always
-                    ? "bg-emerald-500/10 text-emerald-400/60"
-                    : "bg-white/[0.04] text-white/20"
-                }`}
-              >
-                {rule.always ? "always" : "on-demand"}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Rules */}
+      <AnimatedRules />
     </div>
   );
 }
