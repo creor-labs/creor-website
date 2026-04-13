@@ -4,6 +4,7 @@ import { AnimatedRepoMap } from "@/components/animated-repo-map";
 import { AnimatedSkillGraph } from "@/components/animated-skill-graph";
 import { AnimatedRules } from "@/components/animated-rules";
 import { AnimatedDiffPreview } from "@/components/animated-diff";
+import { AnimatedPermissions } from "@/components/animated-permissions";
 
 
 /* ── Section 1: Agent Cards ── */
@@ -261,10 +262,46 @@ function ToolsMCPVisual() {
   ];
 
   const mcpServers = [
-    { name: "GitHub", icon: "GH", status: "connected", desc: "PRs, issues, actions" },
-    { name: "Notion", icon: "N", status: "connected", desc: "Pages, databases" },
-    { name: "Slack", icon: "S", status: "connected", desc: "Messages, channels" },
-    { name: "Linear", icon: "L", status: "disabled", desc: "Issues, projects" },
+    {
+      name: "GitHub",
+      logo: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+        </svg>
+      ),
+      status: "connected",
+      desc: "PRs, issues, actions",
+    },
+    {
+      name: "Notion",
+      logo: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+          <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L18.29 2.29c-.42-.326-.98-.7-2.055-.607L3.01 2.87c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.84-.046.933-.56.933-1.167V6.354c0-.606-.233-.933-.746-.886l-15.177.886c-.56.047-.747.327-.747.934zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.747 0-.933-.234-1.494-.934l-4.577-7.186v6.952l1.448.327s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V8.963L7.926 8.87c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.513.28-.886.747-.933zM2.877.466l13.916-.98c1.727-.14 2.148.046 2.868.56L23.19 2.57c.98.7 1.307 1.027 1.307 1.867v17.283c0 1.12-.42 1.773-1.867 1.866L7.926 24.5c-1.074.047-1.588-.093-2.148-.793L2.41 19.682c-.653-.84-.933-1.494-.933-2.24V2.1c0-.934.42-1.54 1.4-1.634z" />
+        </svg>
+      ),
+      status: "connected",
+      desc: "Pages, databases",
+    },
+    {
+      name: "Slack",
+      logo: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+          <path d="M5.042 15.165a2.528 2.528 0 01-2.52 2.523A2.528 2.528 0 010 15.165a2.527 2.527 0 012.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 012.521-2.52 2.527 2.527 0 012.521 2.52v6.313A2.528 2.528 0 018.834 24a2.528 2.528 0 01-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 01-2.521-2.52A2.528 2.528 0 018.834 0a2.528 2.528 0 012.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 012.521 2.521 2.528 2.528 0 01-2.521 2.521H2.522A2.528 2.528 0 010 8.834a2.528 2.528 0 012.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 012.522-2.521A2.528 2.528 0 0124 8.834a2.528 2.528 0 01-2.522 2.521h-2.522V8.834zm-1.27 0a2.528 2.528 0 01-2.523 2.521 2.527 2.527 0 01-2.52-2.521V2.522A2.527 2.527 0 0115.163 0a2.528 2.528 0 012.523 2.522v6.312zM15.163 18.956a2.528 2.528 0 012.523 2.522A2.528 2.528 0 0115.163 24a2.527 2.527 0 01-2.52-2.522v-2.522h2.52zm0-1.27a2.527 2.527 0 01-2.52-2.523 2.526 2.526 0 012.52-2.52h6.315A2.528 2.528 0 0124 15.163a2.528 2.528 0 01-2.522 2.523h-6.315z" />
+        </svg>
+      ),
+      status: "connected",
+      desc: "Messages, channels",
+    },
+    {
+      name: "Linear",
+      logo: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+          <path d="M1.04 11.16c-.12-.12-.1-.32.04-.42A11.98 11.98 0 0112 4.5c4.04 0 7.59 2 9.76 5.06.1.14.08.32-.04.42l-9.54 9.54c-.12.12-.32.1-.42-.04A11.98 11.98 0 014.5 12c0-1.15.16-2.26.46-3.32.04-.14 0-.28-.1-.36L1.04 11.16zM.42 13.24c-.12-.1-.32-.08-.42.04A12.01 12.01 0 0012 24c.34 0 .68-.02 1.02-.04.16-.01.26-.18.2-.32L.42 13.24z" />
+        </svg>
+      ),
+      status: "disabled",
+      desc: "Issues, projects",
+    },
   ];
 
   return (
@@ -314,12 +351,12 @@ function ToolsMCPVisual() {
               key={server.name}
               className="flex items-center gap-3 rounded-lg border border-white/[0.06] bg-white/[0.04] px-3 py-2.5 transition-colors hover:border-white/[0.12] hover:bg-white/[0.06]"
             >
-              <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[10px] font-bold ${
+              <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${
                 server.status === "connected"
                   ? "bg-white/[0.08] text-white/60"
                   : "bg-white/[0.04] text-white/25"
               }`}>
-                {server.icon}
+                {server.logo}
               </div>
               <div className="flex-1">
                 <div className="text-[11px] text-white/50">{server.name}</div>
@@ -343,117 +380,6 @@ function ToolsMCPVisual() {
             <span className="text-[14px] leading-none">+</span>
             Add MCP Server
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── Visual: Hooks & Permissions ── */
-
-function HooksPermissionsVisual() {
-  const permissions = [
-    { tool: "edit", pattern: "**/*", level: "allow", desc: "Full write access to all files" },
-    { tool: "bash", pattern: "*", level: "ask", desc: "Prompt before running shell commands" },
-    { tool: "read", pattern: "*.env, *.key", level: "ask", desc: "Protect secrets and credentials" },
-    { tool: "write", pattern: "src/**", level: "allow", desc: "Write access to source directory" },
-    { tool: "delete", pattern: "**/*", level: "deny", desc: "Block all file deletions" },
-  ];
-
-  const hooks = [
-    { event: "tool.execute.before", desc: "Validate tool calls before running", enabled: true },
-    { event: "session.start", desc: "Initialize context on new session", enabled: true },
-    { event: "tool.execute.failure", desc: "Alert on tool errors", enabled: false },
-    { event: "shell.env", desc: "Inject env vars into shell", enabled: true },
-  ];
-
-  const levelColors = {
-    allow: { bg: "bg-emerald-500/10", text: "text-emerald-400/70", border: "border-emerald-500/20", icon: "✓" },
-    ask: { bg: "bg-amber-500/10", text: "text-amber-400/70", border: "border-amber-500/20", icon: "?" },
-    deny: { bg: "bg-red-500/10", text: "text-red-400/70", border: "border-red-500/20", icon: "✕" },
-  };
-
-  return (
-    <div className="grid items-start gap-10 md:grid-cols-2">
-      {/* Permissions */}
-      <div>
-        <div className="mb-3 flex items-center justify-between">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-white/35">
-            Permissions
-          </span>
-          <span className="rounded-full bg-white/[0.06] px-2 py-0.5 font-mono text-[9px] text-white/30">
-            5 rules
-          </span>
-        </div>
-        <div className="space-y-1.5">
-          {permissions.map((p) => {
-            const c = levelColors[p.level as keyof typeof levelColors];
-            return (
-              <div
-                key={p.tool + p.pattern}
-                className="rounded-lg border border-white/[0.06] bg-white/[0.04] px-3 py-2.5 transition-colors hover:border-white/[0.12] hover:bg-white/[0.06]"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className={`flex h-5 w-5 items-center justify-center rounded ${c.bg} text-[9px] font-bold ${c.text}`}>
-                      {c.icon}
-                    </div>
-                    <span className="font-mono text-[11px] text-white/50">
-                      {p.tool}
-                    </span>
-                    <span className="rounded bg-white/[0.04] px-1.5 py-0.5 font-mono text-[8px] text-white/20">
-                      {p.pattern}
-                    </span>
-                  </div>
-                  <span className={`rounded-full border ${c.border} ${c.bg} px-2 py-0.5 text-[9px] font-medium ${c.text}`}>
-                    {p.level}
-                  </span>
-                </div>
-                <div className="mt-1 pl-7 text-[9px] text-white/20">{p.desc}</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Hooks */}
-      <div>
-        <div className="mb-3 flex items-center justify-between">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-white/35">
-            Hooks
-          </span>
-          <span className="rounded-full bg-indigo-500/10 px-2 py-0.5 font-mono text-[9px] text-indigo-400/50">
-            3 active
-          </span>
-        </div>
-        <div className="space-y-1.5">
-          {hooks.map((h) => (
-            <div
-              key={h.event}
-              className="rounded-lg border border-white/[0.06] bg-white/[0.04] px-3 py-2.5 transition-colors hover:border-white/[0.12] hover:bg-white/[0.06]"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className={`h-1.5 w-1.5 rounded-full ${h.enabled ? "bg-indigo-500/60" : "bg-white/15"}`} />
-                  <span className="font-mono text-[11px] text-white/50">
-                    {h.event}
-                  </span>
-                </div>
-                <div
-                  className={`h-5 w-9 rounded-full p-0.5 transition-colors ${
-                    h.enabled ? "bg-indigo-500/40" : "bg-white/[0.08]"
-                  }`}
-                >
-                  <div
-                    className={`h-4 w-4 rounded-full transition-transform ${
-                      h.enabled ? "translate-x-4 bg-indigo-400/80" : "bg-white/40"
-                    }`}
-                  />
-                </div>
-              </div>
-              <div className="mt-1 pl-[18px] text-[9px] text-white/20">{h.desc}</div>
-            </div>
-          ))}
         </div>
       </div>
     </div>
@@ -595,7 +521,7 @@ export function FeatureSections() {
         label="4.0 Hooks & Permissions"
         reverse
       >
-        <HooksPermissionsVisual />
+        <AnimatedPermissions />
       </FeatureSection>
 
       {/* Section 6: Snapshot Revert & Diff Preview */}

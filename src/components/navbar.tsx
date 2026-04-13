@@ -8,10 +8,6 @@ import {
   ChevronDown,
   Menu,
   X,
-  Cpu,
-  Code2,
-  FileSearch,
-  BookOpen,
   Newspaper,
   FileText,
 } from "lucide-react";
@@ -39,29 +35,6 @@ type NavItem = NavLink | NavDropdown;
 
 const navItems: NavItem[] = [
   {
-    label: "Product",
-    items: [
-      {
-        label: "AI Agents",
-        href: "/product/agents",
-        description: "Autonomous coding agents with 19+ LLM providers",
-        icon: Cpu,
-      },
-      {
-        label: "Editor",
-        href: "/product/editor",
-        description: "VS Code fork with native AI built in",
-        icon: Code2,
-      },
-      {
-        label: "Code Search",
-        href: "/product/search",
-        description: "RAG-powered semantic search",
-        icon: FileSearch,
-      },
-    ],
-  },
-  {
     label: "Resources",
     items: [
       {
@@ -79,8 +52,8 @@ const navItems: NavItem[] = [
     ],
   },
   { label: "Pricing", href: "/pricing" },
-  { label: "Enterprise", href: "/enterprise" },
   { label: "Docs", href: "/docs" },
+  { label: "Support", href: "/support" },
 ];
 
 function Dropdown({
@@ -246,16 +219,18 @@ export function Navbar() {
     timeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
   }, []);
 
+  const closeMobile = useCallback(() => setMobileOpen(false), []);
+
   return (
     <>
-      <div className="fixed top-0 z-50 w-full flex justify-center pointer-events-none">
+      <div className="fixed top-0 z-50 w-full flex justify-center px-4 pointer-events-none">
         <nav
           ref={navRef}
           className={cn(
             "pointer-events-auto border w-full max-w-[1440px] transition-[background-color,border-color,border-radius,box-shadow,backdrop-filter,margin] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
             scrolled
-              ? "mt-3 rounded-full border-white/[0.10] bg-white/[0.05] backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-              : "mt-5 rounded-none border-transparent bg-transparent shadow-none backdrop-blur-none"
+              ? "mt-0 border-transparent bg-transparent shadow-none backdrop-blur-none md:mt-3 md:rounded-full md:border-white/[0.10] md:bg-white/[0.05] md:backdrop-blur-2xl md:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+              : "mt-0 md:mt-5 rounded-none border-transparent bg-transparent shadow-none backdrop-blur-none"
           )}
         >
           <div className="relative flex h-14 w-full items-center px-6">
@@ -329,7 +304,13 @@ export function Navbar() {
             </div>
 
             {/* Right: CTA */}
-            <div className="ml-auto hidden items-center md:flex">
+            <div className="ml-auto hidden items-center gap-3 md:flex">
+              <Link
+                href="/download"
+                className="inline-flex items-center rounded-full bg-white px-4 py-1.5 text-[13px] font-semibold text-black transition-colors hover:bg-white/90 active:scale-[0.97]"
+              >
+                Download
+              </Link>
               <Link
                 href="/login"
                 className="inline-flex items-center rounded-full border border-white/[0.15] bg-white/[0.08] px-4 py-1.5 text-[13px] font-medium text-white/90 transition-colors hover:bg-white/[0.14] active:scale-[0.97]"
@@ -356,7 +337,7 @@ export function Navbar() {
         </nav>
       </div>
 
-      <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileMenu isOpen={mobileOpen} onClose={closeMobile} />
     </>
   );
 }

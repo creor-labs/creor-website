@@ -27,17 +27,14 @@ export function Footer() {
           <div className="text-[13px]">
             <p className="mb-4 text-[12px] font-medium uppercase tracking-wider text-white/50">Product</p>
             <div className="space-y-3 text-white/30">
-              <Link href="/product/agents" className="block transition-colors hover:text-white/70">
-                Agents
+              <Link href="/download" className="block transition-colors hover:text-white/70">
+                Download
               </Link>
-              <Link href="/product/editor" className="block transition-colors hover:text-white/70">
-                Editor
+              <Link href="/pricing" className="block transition-colors hover:text-white/70">
+                Pricing
               </Link>
-              <Link href="/product/terminal" className="block transition-colors hover:text-white/70">
-                Terminal
-              </Link>
-              <Link href="/product/search" className="block transition-colors hover:text-white/70">
-                Code Search
+              <Link href="/support" className="block transition-colors hover:text-white/70">
+                Support
               </Link>
             </div>
           </div>
@@ -58,11 +55,14 @@ export function Footer() {
           <div className="text-[13px]">
             <p className="mb-4 text-[12px] font-medium uppercase tracking-wider text-white/50">Company</p>
             <div className="space-y-3 text-white/30">
-              <Link href="/pricing" className="block transition-colors hover:text-white/70">
-                Pricing
+              <Link href="/about" className="block transition-colors hover:text-white/70">
+                About
               </Link>
-              <Link href="/enterprise" className="block transition-colors hover:text-white/70">
-                Enterprise
+              <Link href="/privacy" className="block transition-colors hover:text-white/70">
+                Privacy
+              </Link>
+              <Link href="/terms" className="block transition-colors hover:text-white/70">
+                Terms
               </Link>
             </div>
           </div>
