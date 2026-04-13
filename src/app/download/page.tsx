@@ -57,13 +57,33 @@ const FEATURES = [
 export default function DownloadPage() {
   if (SHOW_WAITLIST) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="relative min-h-screen overflow-hidden bg-background">
+        {/* Background decoration */}
+        <div
+          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 h-[600px] w-[900px] opacity-[0.07]"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(129,140,248,0.8) 0%, rgba(168,85,247,0.3) 40%, transparent 70%)",
+          }}
+        />
+        <svg
+          className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.02]"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <pattern id="wgrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <circle cx="20" cy="20" r="0.6" fill="white" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#wgrid)" />
+        </svg>
+
         <Navbar />
 
-        <main className="mx-auto max-w-[720px] px-6 pt-32 pb-20">
+        <main className="relative z-10 mx-auto max-w-[860px] px-6 pt-32 pb-20">
           {/* Hero */}
           <div className="text-center">
-            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-b from-indigo-500/20 to-indigo-500/5 shadow-[0_0_60px_rgba(129,140,248,0.15)]">
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-b from-indigo-500/20 to-indigo-500/5 shadow-[0_0_60px_rgba(129,140,248,0.2)]">
               <Sparkles className="h-7 w-7 text-indigo-400" />
             </div>
             <span className="inline-block rounded-full bg-indigo-500/15 px-3 py-1 text-[11px] font-medium text-indigo-400">
@@ -79,106 +99,115 @@ export default function DownloadPage() {
           </div>
 
           {/* Waitlist form */}
-          <WaitlistForm />
-
-          {/* Early bird offer */}
-          <div className="mt-12 overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.06] to-orange-500/[0.03]">
-            <div className="flex items-center gap-2.5 border-b border-amber-500/10 bg-amber-500/[0.04] px-5 py-2.5">
-              <Gift className="h-4 w-4 text-amber-400" />
-              <span className="text-[12px] font-semibold text-amber-300">
-                Early Bird Reward
-              </span>
-              <span className="ml-auto rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium text-amber-400/80">
-                First 500 users
-              </span>
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-bold text-white/80">
-                3 months free Pro access
-              </h3>
-              <p className="mt-1.5 text-[13px] leading-relaxed text-white/35">
-                The first 500 waitlist members get a coupon for 3 months of free
-                Creor Pro — delivered to your email when the app launches.
-              </p>
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <Key className="h-3.5 w-3.5 text-indigo-400/70" />
-                    <span className="text-[12px] font-medium text-white/60">
-                      BYOK — Unlimited
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-white/25">
-                    Bring your own API key from any provider. No usage caps from
-                    us. Your key, your quota.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <Users className="h-3.5 w-3.5 text-emerald-400/70" />
-                    <span className="text-[12px] font-medium text-white/60">
-                      Auth — Managed
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-white/25">
-                    Sign in with GitHub or Google. Use Creor&apos;s managed
-                    access to all supported providers.
-                  </p>
-                </div>
-              </div>
-              <div className="mt-4 flex items-center gap-3 rounded-lg bg-white/[0.03] px-4 py-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500/15">
-                  <span className="text-[14px]">🎟</span>
-                </div>
-                <div className="flex-1">
-                  <p className="text-[11px] font-medium text-white/50">
-                    Coupon codes delivered at launch
-                  </p>
-                  <p className="text-[10px] text-white/25">
-                    We&apos;ll email your unique code when Creor is ready to
-                    download
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="mx-auto max-w-[560px]">
+            <WaitlistForm />
           </div>
 
-          {/* What's included */}
-          <div className="mt-8 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
-            <h2 className="text-[14px] font-semibold text-white/60">
-              What&apos;s included in Creor
-            </h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {[
-                "AI agents that write, plan, and debug code",
-                "Works with Claude, GPT-4, Gemini, and more",
-                "25+ built-in tools for file ops, search, and analysis",
-                "MCP support for external integrations",
-                "Your code never leaves your machine",
-                "macOS (Apple Silicon & Intel) + Windows",
-              ].map((f) => (
-                <div key={f} className="flex items-start gap-2.5">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400/60" />
-                  <span className="text-[12px] text-white/40">{f}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Platform badges */}
-          <div className="mt-6 flex justify-center gap-3">
-            {[
-              { icon: Apple, name: "macOS" },
-              { icon: Monitor, name: "Windows" },
-            ].map((p) => (
-              <div
-                key={p.name}
-                className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.02] px-4 py-2"
-              >
-                <p.icon className="h-4 w-4 text-white/30" />
-                <span className="text-[12px] text-white/40">{p.name}</span>
+          {/* Two-column layout */}
+          <div className="mt-14 grid gap-5 md:grid-cols-[1.1fr_1fr]">
+            {/* Early bird offer */}
+            <div className="overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.06] to-orange-500/[0.02]">
+              <div className="flex items-center gap-2.5 border-b border-amber-500/10 bg-amber-500/[0.04] px-5 py-2.5">
+                <Gift className="h-4 w-4 text-amber-400" />
+                <span className="text-[12px] font-semibold text-amber-300">
+                  Early Bird Reward
+                </span>
+                <span className="ml-auto rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium text-amber-400/80">
+                  First 500 users
+                </span>
               </div>
-            ))}
+              <div className="p-5">
+                <h3 className="text-xl font-bold text-white/85">
+                  3 months free
+                </h3>
+                <p className="mt-1 text-[13px] text-white/35">
+                  BYOK plan worth <span className="line-through text-white/25">$27</span>{" "}
+                  <span className="font-semibold text-amber-400/80">$0</span> — first 500 waitlist members
+                </p>
+
+                <div className="mt-5 space-y-2.5">
+                  <div className="flex items-start gap-3 rounded-xl border border-indigo-500/15 bg-indigo-500/[0.04] p-3.5">
+                    <Key className="mt-0.5 h-4 w-4 shrink-0 text-indigo-400/70" />
+                    <div>
+                      <p className="text-[12px] font-medium text-white/60">
+                        Bring Your Own Key
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-white/25">
+                        Use your API key from any provider. No usage caps. $9/mo after free period.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5">
+                    <Users className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400/70" />
+                    <div>
+                      <p className="text-[12px] font-medium text-white/60">
+                        Or use Creor Auth
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-white/25">
+                        Sign in with GitHub/Google. Managed access to all providers.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex items-center gap-2.5 rounded-lg bg-white/[0.03] px-3.5 py-2.5">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-500/15 text-[12px]">
+                    🎟
+                  </div>
+                  <p className="text-[10px] text-white/30">
+                    Coupon codes emailed at launch
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* What's included */}
+            <div className="flex flex-col gap-5">
+              <div className="flex-1 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
+                <h2 className="text-[14px] font-semibold text-white/60">
+                  What&apos;s included
+                </h2>
+                <div className="mt-4 space-y-2.5">
+                  {[
+                    "AI agents that write, plan, and debug",
+                    "Claude, GPT-4, Gemini, and 15+ more",
+                    "25+ built-in tools",
+                    "MCP for external integrations",
+                    "Code never leaves your machine",
+                    "Full hooks & permissions control",
+                  ].map((f) => (
+                    <div key={f} className="flex items-center gap-2.5">
+                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-400/60" />
+                      <span className="text-[12px] text-white/40">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Platforms */}
+              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
+                <h2 className="mb-3 text-[14px] font-semibold text-white/60">
+                  Available on
+                </h2>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {[
+                    { icon: Apple, name: "macOS", desc: "Apple Silicon & Intel" },
+                    { icon: Monitor, name: "Windows", desc: "Windows 10/11 (64-bit)" },
+                  ].map((p) => (
+                    <div
+                      key={p.name}
+                      className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3.5 py-3"
+                    >
+                      <p.icon className="h-5 w-5 text-white/30" />
+                      <div>
+                        <p className="text-[12px] font-medium text-white/50">{p.name}</p>
+                        <p className="text-[10px] text-white/20">{p.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </main>
 
