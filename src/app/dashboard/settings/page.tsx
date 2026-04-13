@@ -1,235 +1,222 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import {
   Loader2,
-  Monitor,
-  Smartphone,
-  Globe,
-  X,
-  Github,
-  Shield,
   AlertTriangle,
   Trash2,
+  Bell,
+  Download,
+  ExternalLink,
+  CheckCircle2,
+  ArrowUpCircle,
 } from "lucide-react";
+import { api } from "@/lib/api";
 
-/* ── Types ── */
+const GITHUB_REPO = "modhisathvik7733/creor-app";
 
-interface Session {
-  id: string;
-  device: string | null;
-  ipAddress: string | null;
-  userAgent: string | null;
-  timeCreated: string;
-  timeExpires: string;
-}
+/* ── Notifications Section ── */
 
-/* ── Helpers ── */
+function NotificationsSection() {
+  const [productUpdates, setProductUpdates] = useState(() => {
+    if (typeof window === "undefined") return true;
+    const stored = localStorage.getItem("creor_notify_product_updates");
+    return stored === null ? true : stored === "true";
+  });
 
-function parseDevice(ua: string | null): {
-  icon: typeof Monitor;
-  label: string;
-} {
-  if (!ua) return { icon: Globe, label: "Unknown device" };
-  const lower = ua.toLowerCase();
-  if (lower.includes("mobile") || lower.includes("android") || lower.includes("iphone"))
-    return { icon: Smartphone, label: "Mobile" };
-  return { icon: Monitor, label: "Desktop" };
-}
-
-function parseBrowser(ua: string | null): string {
-  if (!ua) return "Unknown browser";
-  if (ua.includes("Firefox")) return "Firefox";
-  if (ua.includes("Edg")) return "Edge";
-  if (ua.includes("Chrome")) return "Chrome";
-  if (ua.includes("Safari")) return "Safari";
-  return "Browser";
-}
-
-function timeAgo(date: string): string {
-  const diff = Date.now() - new Date(date).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "Just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-
-/* ── Active Sessions Section ── */
-
-function SessionsSection() {
-  const [sessions, setSessions] = useState<Session[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [revokingId, setRevokingId] = useState<string | null>(null);
-
-  const load = useCallback(async () => {
-    try {
-      const data = await api.getSessions();
-      setSessions(data);
-    } catch {
-      // silently fail
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    load();
-  }, [load]);
-
-  const handleRevoke = async (id: string) => {
-    setRevokingId(id);
-    try {
-      await api.revokeSession(id);
-      setSessions((prev) => prev.filter((s) => s.id !== id));
-    } catch {
-      // silently fail
-    } finally {
-      setRevokingId(null);
-    }
+  const handleToggle = () => {
+    const next = !productUpdates;
+    setProductUpdates(next);
+    localStorage.setItem("creor_notify_product_updates", String(next));
   };
 
   return (
     <div className="rounded-xl border border-border bg-card">
       <div className="border-b border-border px-5 py-4">
         <div className="flex items-center gap-2">
-          <Shield className="h-4 w-4 text-muted-foreground" />
-          <h2 className="font-semibold">Active Sessions</h2>
+          <Bell className="h-4 w-4 text-muted-foreground" />
+          <h2 className="font-semibold">Notifications</h2>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          Devices currently signed into your account
+          Choose what emails you receive from Creor
         </p>
       </div>
-
-      {loading ? (
-        <div className="flex items-center justify-center p-8">
-          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+      <div className="divide-y divide-border">
+        <div className="flex items-center justify-between px-5 py-4">
+          <div>
+            <p className="text-sm font-medium">Product updates</p>
+            <p className="text-xs text-muted-foreground">
+              New features, improvements, and announcements
+            </p>
+          </div>
+          <button
+            onClick={handleToggle}
+            className={`relative h-6 w-11 rounded-full transition-colors ${
+              productUpdates ? "bg-indigo-500" : "bg-muted"
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                productUpdates ? "translate-x-5" : "translate-x-0"
+              }`}
+            />
+          </button>
         </div>
-      ) : sessions.length === 0 ? (
-        <div className="p-8 text-center text-sm text-muted-foreground">
-          No active sessions found
-        </div>
-      ) : (
-        <div className="divide-y divide-border">
-          {sessions.map((session) => {
-            const device = parseDevice(session.userAgent);
-            const DeviceIcon = device.icon;
-            const browser = parseBrowser(session.userAgent);
-            const isRevoking = revokingId === session.id;
-
-            return (
-              <div
-                key={session.id}
-                className="flex items-center justify-between px-5 py-3.5"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
-                    <DeviceIcon className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">
-                      {browser} &middot; {device.label}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {session.ipAddress ?? "Unknown IP"} &middot;{" "}
-                      {timeAgo(session.timeCreated)}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => handleRevoke(session.id)}
-                  disabled={isRevoking}
-                  className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
-                >
-                  {isRevoking ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    <X className="h-3 w-3" />
-                  )}
-                  Revoke
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      </div>
     </div>
   );
 }
 
-/* ── Connected Accounts Section ── */
+/* ── IDE Version Section ── */
 
-function ConnectedAccountsSection({ email }: { email: string }) {
-  // Infer provider from email domain (best we can do without a dedicated API)
-  const isGmail =
-    email.endsWith("@gmail.com") || email.endsWith("@googlemail.com");
-  const isGithubLogin = !isGmail; // If not Google, likely GitHub
+interface ReleaseInfo {
+  version: string;
+  publishedAt: string;
+  notes: string;
+  url: string;
+}
 
-  const providers = [
-    {
-      name: "GitHub",
-      icon: Github,
-      connected: isGithubLogin,
-      desc: isGithubLogin ? `Signed in via GitHub` : "Not connected",
-    },
-    {
-      name: "Google",
-      icon: GoogleIcon,
-      connected: isGmail,
-      desc: isGmail ? `Signed in via Google` : "Not connected",
-    },
-  ];
+function IDEVersionSection() {
+  const [release, setRelease] = useState<ReleaseInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const fetchLatest = useCallback(async () => {
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`,
+        { headers: { Accept: "application/vnd.github.v3+json" } },
+      );
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setRelease({
+        version: (data.tag_name as string).replace(/^v/, ""),
+        publishedAt: data.published_at,
+        notes: data.body ?? "",
+        url: data.html_url,
+      });
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchLatest();
+  }, [fetchLatest]);
+
+  const formatDate = (iso: string) => {
+    return new Date(iso).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  // Extract first 2-3 lines from release notes for preview
+  const previewNotes = (notes: string) => {
+    const lines = notes
+      .split("\n")
+      .map((l) => l.trim())
+      .filter((l) => l && !l.startsWith("#"));
+    return lines.slice(0, 3);
+  };
 
   return (
     <div className="rounded-xl border border-border bg-card">
       <div className="border-b border-border px-5 py-4">
-        <h2 className="font-semibold">Connected Accounts</h2>
+        <div className="flex items-center gap-2">
+          <Download className="h-4 w-4 text-muted-foreground" />
+          <h2 className="font-semibold">Creor IDE</h2>
+        </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          OAuth providers linked to your account
+          Latest version of the Creor desktop app
         </p>
       </div>
-      <div className="divide-y divide-border">
-        {providers.map((p) => (
-          <div
-            key={p.name}
-            className="flex items-center justify-between px-5 py-3.5"
-          >
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted">
-                <p.icon className="h-4 w-4 text-muted-foreground" />
-              </div>
-              <div>
-                <p className="text-sm font-medium">{p.name}</p>
-                <p className="text-xs text-muted-foreground">{p.desc}</p>
-              </div>
-            </div>
-            {p.connected && (
-              <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                Connected
-              </span>
-            )}
+      <div className="p-5">
+        {loading ? (
+          <div className="flex items-center justify-center py-4">
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           </div>
-        ))}
+        ) : error ? (
+          <p className="text-sm text-muted-foreground">
+            Unable to check for updates right now.
+          </p>
+        ) : release ? (
+          <div className="space-y-4">
+            {/* Version badge */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-indigo-500/20 bg-indigo-500/[0.08]">
+                  <ArrowUpCircle className="h-5 w-5 text-indigo-400" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold">v{release.version}</p>
+                    <span className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">
+                      <CheckCircle2 className="h-3 w-3" />
+                      Latest
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Released {formatDate(release.publishedAt)}
+                  </p>
+                </div>
+              </div>
+              <a
+                href={release.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+              >
+                <ExternalLink className="h-3 w-3" />
+                View release
+              </a>
+            </div>
+
+            {/* Release notes preview */}
+            {release.notes && previewNotes(release.notes).length > 0 && (
+              <div className="rounded-lg border border-border bg-muted/30 px-4 py-3">
+                <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                  What&apos;s new
+                </p>
+                <ul className="space-y-1">
+                  {previewNotes(release.notes).map((line, i) => (
+                    <li
+                      key={i}
+                      className="text-xs leading-relaxed text-foreground/70"
+                    >
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Download buttons */}
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: "macOS (Apple Silicon)", asset: "Creor-darwin-arm64.zip" },
+                { label: "macOS (Intel)", asset: "Creor-darwin-x64.zip" },
+                { label: "Windows", asset: "Creor-win32-x64.zip" },
+                { label: "Linux", asset: "Creor-linux-x64.tar.gz" },
+              ].map((dl) => (
+                <a
+                  key={dl.asset}
+                  href={`https://github.com/${GITHUB_REPO}/releases/latest/download/${dl.asset}`}
+                  className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  <Download className="h-3 w-3" />
+                  {dl.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
-  );
-}
-
-/* ── Simple Google SVG icon (lucide doesn't have one) ── */
-
-function GoogleIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
-      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-    </svg>
   );
 }
 
@@ -245,7 +232,6 @@ function DangerZone() {
     if (confirmText !== "delete my account") return;
     setDeleting(true);
     try {
-      // Fire and forget — API may not exist yet, but the UI is ready
       await api.post("/api/users/me/delete", {});
       await logout();
     } catch {
@@ -323,14 +309,13 @@ function DangerZone() {
   );
 }
 
-/* ── Main Settings Page ── */
+/* ── Account Page ── */
 
-export default function SettingsPage() {
+export default function AccountPage() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Small delay to let auth settle
     const t = setTimeout(() => setLoading(false), 100);
     return () => clearTimeout(t);
   }, []);
@@ -346,7 +331,7 @@ export default function SettingsPage() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Account</h1>
         <p className="mt-1 text-muted-foreground">
           Manage your account
         </p>
@@ -383,11 +368,11 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        {/* Active Sessions */}
-        <SessionsSection />
+        {/* Notifications */}
+        <NotificationsSection />
 
-        {/* Connected Accounts */}
-        <ConnectedAccountsSection email={user.email} />
+        {/* IDE Version */}
+        <IDEVersionSection />
 
         {/* Danger Zone */}
         <DangerZone />

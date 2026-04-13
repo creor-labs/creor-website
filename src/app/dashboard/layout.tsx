@@ -27,7 +27,7 @@ const sidebarItems = [
   { href: "/dashboard/keys", label: "API Keys", icon: Key },
   { href: "/dashboard/usage", label: "Usage", icon: BarChart3 },
   { href: "/docs", label: "Docs", icon: FileText },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
+  { href: "/dashboard/settings", label: "Account", icon: Settings },
 ];
 
 export default function DashboardLayout({
