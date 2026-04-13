@@ -85,16 +85,16 @@ const edgeTypes = { animated: AnimatedEdge };
 /* ── Node/Edge Definitions ── */
 
 const initialNodes: Node[] = [
-  { id: "root", type: "skill", position: { x: 310, y: 0 }, data: { label: "SKILL.md", sub: "Auth system", type: "root" } },
-  { id: "oauth", type: "skill", position: { x: 40, y: 110 }, data: { label: "oauth-flow", type: "child" } },
-  { id: "jwt", type: "skill", position: { x: 295, y: 110 }, data: { label: "jwt-tokens", type: "child" } },
-  { id: "mw", type: "skill", position: { x: 550, y: 110 }, data: { label: "middleware", type: "child" } },
-  { id: "google", type: "skill", position: { x: -20, y: 220 }, data: { label: "google-sso", type: "leaf" } },
-  { id: "github", type: "skill", position: { x: 120, y: 220 }, data: { label: "github-oauth", type: "leaf" } },
-  { id: "refresh", type: "skill", position: { x: 240, y: 220 }, data: { label: "refresh-flow", type: "leaf" } },
-  { id: "verify", type: "skill", position: { x: 380, y: 220 }, data: { label: "verify", type: "leaf" } },
-  { id: "rate", type: "skill", position: { x: 500, y: 220 }, data: { label: "rate-limit", type: "leaf" } },
-  { id: "cors", type: "skill", position: { x: 640, y: 220 }, data: { label: "cors-policy", type: "leaf" } },
+  { id: "root", type: "skill", position: { x: 220, y: 0 }, data: { label: "SKILL.md", sub: "Auth system", type: "root" } },
+  { id: "oauth", type: "skill", position: { x: 30, y: 100 }, data: { label: "oauth-flow", type: "child" } },
+  { id: "jwt", type: "skill", position: { x: 210, y: 100 }, data: { label: "jwt-tokens", type: "child" } },
+  { id: "mw", type: "skill", position: { x: 390, y: 100 }, data: { label: "middleware", type: "child" } },
+  { id: "google", type: "skill", position: { x: 0, y: 200 }, data: { label: "google-sso", type: "leaf" } },
+  { id: "github", type: "skill", position: { x: 100, y: 200 }, data: { label: "github-oauth", type: "leaf" } },
+  { id: "refresh", type: "skill", position: { x: 190, y: 200 }, data: { label: "refresh-flow", type: "leaf" } },
+  { id: "verify", type: "skill", position: { x: 290, y: 200 }, data: { label: "verify", type: "leaf" } },
+  { id: "rate", type: "skill", position: { x: 370, y: 200 }, data: { label: "rate-limit", type: "leaf" } },
+  { id: "cors", type: "skill", position: { x: 460, y: 200 }, data: { label: "cors-policy", type: "leaf" } },
 ];
 
 const initialEdges: Edge[] = [
@@ -136,7 +136,7 @@ function SkillGraphInner() {
     if (!el) return;
 
     const ro = new ResizeObserver(() => {
-      fitView({ padding: 0.15, duration: 200 });
+      fitView({ padding: 0.2, duration: 200 });
     });
 
     ro.observe(el);
@@ -214,7 +214,7 @@ function SkillGraphInner() {
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           fitView
-          fitViewOptions={{ padding: 0.15, minZoom: 0.3, maxZoom: 1 }}
+          fitViewOptions={{ padding: 0.2, minZoom: 0.2, maxZoom: 1 }}
           panOnDrag={false}
           zoomOnScroll={false}
           zoomOnPinch={false}
