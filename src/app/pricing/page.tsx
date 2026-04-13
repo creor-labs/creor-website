@@ -25,7 +25,7 @@ const PLANS = [
       "Top up anytime",
     ],
     cta: "Download Free",
-    href: "/download",
+    href: "/waitlist",
     highlighted: false,
   },
   {

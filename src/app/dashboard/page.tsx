@@ -152,7 +152,7 @@ export default function DashboardOverview() {
             {
               label: "Download Creor IDE",
               desc: "Get the desktop app for your platform",
-              href: "/download",
+              href: "/waitlist",
             },
           ].map((action) => (
             <Link

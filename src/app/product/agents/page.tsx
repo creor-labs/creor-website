@@ -55,7 +55,7 @@ export default function AgentsPage() {
         </div>
 
         <Link
-          href="/download"
+          href="/waitlist"
           className="group mt-12 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90"
         >
           Join Waitlist

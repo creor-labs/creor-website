@@ -165,7 +165,7 @@ function MobileMenu({
             Sign in
           </Link>
           <Link
-            href="/download"
+            href="/waitlist"
             onClick={onClose}
             className="block w-full rounded-full border border-white/10 bg-white/5 py-2.5 text-center text-[13px] font-medium text-foreground transition-transform active:scale-95"
           >
@@ -309,7 +309,7 @@ export function Navbar() {
             {/* Right: CTA */}
             <div className="ml-auto hidden items-center gap-3 md:flex">
               <Link
-                href="/download"
+                href="/waitlist"
                 className="inline-flex items-center rounded-full bg-white px-4 py-1.5 text-[13px] font-semibold text-black transition-colors hover:bg-white/90 active:scale-[0.97]"
               >
                 Join Waitlist

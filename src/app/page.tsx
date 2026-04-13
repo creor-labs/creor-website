@@ -121,7 +121,7 @@ export default function Home() {
               </p>
               <div className="flex justify-center gap-3">
                 <Link
-                  href="/download"
+                  href="/waitlist"
                   className="glow-pulse group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 text-[14px] font-semibold text-background transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Join Waitlist

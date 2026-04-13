@@ -76,7 +76,7 @@ function ShareContent() {
           </div>
         </div>
         <Link
-          href="/download"
+          href="/waitlist"
           className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground"
         >
           Try Creor

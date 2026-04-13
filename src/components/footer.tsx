@@ -30,8 +30,8 @@ export function Footer() {
           <div className="text-[13px]">
             <p className="mb-4 text-[12px] font-medium uppercase tracking-wider text-white/50">Product</p>
             <div className="space-y-3 text-white/30">
-              <Link href="/download" className="block transition-colors hover:text-white/70">
-                Download
+              <Link href="/waitlist" className="block transition-colors hover:text-white/70">
+                Join Waitlist
               </Link>
               <Link href="/pricing" className="block transition-colors hover:text-white/70">
                 Pricing
