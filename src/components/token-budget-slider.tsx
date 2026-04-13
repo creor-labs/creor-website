@@ -1,38 +1,14 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { useRef, useState, useCallback } from "react";
 
 const MAX_TOKENS = 30000;
 const INITIAL_TOKENS = 10000;
 
 export function TokenBudgetSlider() {
-  const [tokens, setTokens] = useState(0);
-  const [animatedIn, setAnimatedIn] = useState(false);
+  const [tokens, setTokens] = useState(INITIAL_TOKENS);
   const trackRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
-  const { ref: visRef, isIntersecting } = useIntersectionObserver({ threshold: 0.3 });
-
-  // Animate in on first scroll
-  useEffect(() => {
-    if (!isIntersecting || animatedIn) return;
-    setAnimatedIn(true);
-
-    const duration = 1400;
-    const start = performance.now();
-    let raf: number;
-
-    function tick(now: number) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setTokens(Math.round(INITIAL_TOKENS * eased));
-      if (progress < 1) raf = requestAnimationFrame(tick);
-    }
-
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [isIntersecting, animatedIn]);
 
   const updateFromPointer = useCallback((clientX: number) => {
     const track = trackRef.current;
@@ -66,7 +42,7 @@ export function TokenBudgetSlider() {
   const pct = (tokens / MAX_TOKENS) * 100;
 
   return (
-    <div ref={visRef}>
+    <div>
       <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
         Token Budget
       </span>
