@@ -165,7 +165,7 @@ function FeatureSection({
 
         {/* Visual */}
         <FadeIn delay={150}>
-          <div className="mt-12 overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 sm:mt-16 sm:p-10">
+          <div className="mt-12 overflow-hidden rounded-xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-white/[0.02] p-6 sm:mt-16 sm:p-10">
             {children}
           </div>
         </FadeIn>
@@ -196,17 +196,17 @@ function RepoMapVisual() {
     <div className="grid gap-8 md:grid-cols-2">
       {/* File tree */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
           Repo Map
         </span>
         <div className="space-y-0.5 font-mono text-[11px]">
           {files.map((f, i) => (
             <div
               key={i}
-              className="text-white/30"
+              className="text-white/45"
               style={{ paddingLeft: `${f.indent * 16}px` }}
             >
-              <span className={f.type === "folder" ? "text-amber-400/40" : "text-white/25"}>
+              <span className={f.type === "folder" ? "text-amber-400/60" : "text-white/35"}>
                 {f.type === "folder" ? "▸ " : "  "}
               </span>
               {f.name}
@@ -218,25 +218,25 @@ function RepoMapVisual() {
       {/* Context settings */}
       <div className="space-y-5">
         <div>
-          <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+          <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
             Token Budget
           </span>
           <div className="flex items-center gap-3">
-            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
-              <div className="h-full w-[33%] rounded-full bg-indigo-500/50" />
+            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.08]">
+              <div className="h-full w-[33%] rounded-full bg-indigo-500/60" />
             </div>
-            <span className="font-mono text-[11px] text-white/30">10,000</span>
+            <span className="font-mono text-[11px] text-white/45">10,000</span>
           </div>
         </div>
         <div>
-          <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+          <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
             Excluded
           </span>
           <div className="flex flex-wrap gap-1.5">
             {excludeTags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-0.5 font-mono text-[10px] text-white/25"
+                className="rounded-full border border-white/[0.10] bg-white/[0.06] px-2.5 py-0.5 font-mono text-[10px] text-white/40"
               >
                 {tag}
               </span>
@@ -244,20 +244,20 @@ function RepoMapVisual() {
           </div>
         </div>
         <div>
-          <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+          <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
             Auto-injected
           </span>
-          <div className="flex gap-3 text-[11px] text-white/25">
+          <div className="flex gap-3 text-[11px] text-white/40">
             <span className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/50" />
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/70" />
               Git state
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/50" />
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/70" />
               File tree
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/50" />
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/70" />
               Dependencies
             </span>
           </div>
@@ -281,15 +281,15 @@ function SkillsRulesVisual() {
     <div className="grid gap-8 md:grid-cols-2">
       {/* Skill graph */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
           Skill Graph
         </span>
         <div className="space-y-2">
-          <div className="rounded-lg border border-indigo-500/20 bg-indigo-500/[0.05] p-3">
-            <div className="mb-1 text-[11px] font-medium text-indigo-300/60">
+          <div className="rounded-lg border border-indigo-500/30 bg-indigo-500/[0.08] p-3">
+            <div className="mb-1 text-[11px] font-medium text-indigo-300/80">
               SKILL.md
             </div>
-            <div className="text-[10px] text-white/25">
+            <div className="text-[10px] text-white/40">
               Auth system overview
             </div>
           </div>
@@ -297,7 +297,7 @@ function SkillsRulesVisual() {
             {["[[oauth-flow]]", "[[jwt-tokens]]", "[[middleware]]"].map((link) => (
               <div
                 key={link}
-                className="rounded border border-white/[0.06] bg-white/[0.03] px-2 py-1 font-mono text-[9px] text-purple-300/40"
+                className="rounded border border-white/[0.10] bg-white/[0.06] px-2 py-1 font-mono text-[9px] text-purple-300/60"
               >
                 {link}
               </div>
@@ -308,16 +308,16 @@ function SkillsRulesVisual() {
 
       {/* Rules list */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
           Rules
         </span>
         <div className="space-y-1.5">
           {rules.map((rule) => (
             <div
               key={rule.name}
-              className="flex items-center justify-between rounded-lg bg-white/[0.03] px-3 py-2"
+              className="flex items-center justify-between rounded-lg bg-white/[0.06] px-3 py-2"
             >
-              <span className="font-mono text-[11px] text-white/30">
+              <span className="font-mono text-[11px] text-white/45">
                 {rule.name}
               </span>
               <span
@@ -359,19 +359,19 @@ function ToolsMCPVisual() {
     <div className="grid gap-8 md:grid-cols-[1.2fr_1fr]">
       {/* Tools grid */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
           Built-in Tools
         </span>
         <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
           {tools.map((tool) => (
             <div
               key={tool.name}
-              className="rounded-lg bg-white/[0.03] px-3 py-2"
+              className="rounded-lg bg-white/[0.06] px-3 py-2"
             >
-              <div className="font-mono text-[11px] text-white/40">
+              <div className="font-mono text-[11px] text-white/50">
                 {tool.name}
               </div>
-              <div className="text-[9px] text-white/15">{tool.desc}</div>
+              <div className="text-[9px] text-white/30">{tool.desc}</div>
             </div>
           ))}
         </div>
@@ -379,16 +379,16 @@ function ToolsMCPVisual() {
 
       {/* MCP servers */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
           MCP Servers
         </span>
         <div className="space-y-1.5">
           {mcpServers.map((server) => (
             <div
               key={server.name}
-              className="flex items-center justify-between rounded-lg bg-white/[0.03] px-3 py-2.5"
+              className="flex items-center justify-between rounded-lg bg-white/[0.06] px-3 py-2.5"
             >
-              <span className="text-[11px] text-white/30">{server.name}</span>
+              <span className="text-[11px] text-white/45">{server.name}</span>
               <span className="flex items-center gap-1.5 text-[9px]">
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${
@@ -397,11 +397,11 @@ function ToolsMCPVisual() {
                       : "bg-white/15"
                   }`}
                 />
-                <span className="text-white/20">{server.status}</span>
+                <span className="text-white/35">{server.status}</span>
               </span>
             </div>
           ))}
-          <div className="rounded-lg border border-dashed border-white/[0.08] px-3 py-2 text-center text-[10px] text-white/15">
+          <div className="rounded-lg border border-dashed border-white/[0.12] px-3 py-2 text-center text-[10px] text-white/30">
             + Add Server
           </div>
         </div>
@@ -432,16 +432,16 @@ function HooksPermissionsVisual() {
     <div className="grid gap-8 md:grid-cols-2">
       {/* Permissions */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
           Permissions
         </span>
         <div className="space-y-1">
           {permissions.map((p) => (
             <div
               key={p.tool}
-              className="flex items-center justify-between rounded bg-white/[0.03] px-3 py-1.5"
+              className="flex items-center justify-between rounded bg-white/[0.06] px-3 py-1.5"
             >
-              <span className="font-mono text-[11px] text-white/30">
+              <span className="font-mono text-[11px] text-white/45">
                 {p.tool}
               </span>
               <span
@@ -462,16 +462,16 @@ function HooksPermissionsVisual() {
 
       {/* Hooks */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
           Hooks
         </span>
         <div className="space-y-1">
           {hooks.map((h) => (
             <div
               key={h.event}
-              className="flex items-center justify-between rounded bg-white/[0.03] px-3 py-1.5"
+              className="flex items-center justify-between rounded bg-white/[0.06] px-3 py-1.5"
             >
-              <span className="font-mono text-[11px] text-white/30">
+              <span className="font-mono text-[11px] text-white/45">
                 {h.event}
               </span>
               <div
@@ -506,12 +506,12 @@ function SnapshotDiffVisual() {
     <div className="grid gap-8 md:grid-cols-2">
       {/* Snapshot timeline */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
           Snapshot Timeline
         </span>
         <div className="relative space-y-0 pl-4">
           {/* Vertical line */}
-          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-white/[0.08]" />
+          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-white/[0.12]" />
           {snapshots.map((snap, i) => (
             <div key={snap.id} className="relative flex items-start gap-3 py-2">
               {/* Dot */}
@@ -524,12 +524,12 @@ function SnapshotDiffVisual() {
               />
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-[10px] text-white/20">
+                  <span className="font-mono text-[10px] text-white/35">
                     {snap.id}
                   </span>
-                  <span className="text-[9px] text-white/15">{snap.time}</span>
+                  <span className="text-[9px] text-white/25">{snap.time}</span>
                 </div>
-                <div className="text-[11px] text-white/35">{snap.label}</div>
+                <div className="text-[11px] text-white/45">{snap.label}</div>
                 {snap.active && (
                   <button className="mt-1.5 rounded border border-amber-500/20 bg-amber-500/[0.08] px-2 py-0.5 font-mono text-[9px] text-amber-400/60">
                     ← Revert to here
@@ -543,60 +543,60 @@ function SnapshotDiffVisual() {
 
       {/* Diff preview */}
       <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/20">
+        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
           Diff Preview
         </span>
         <div className="overflow-hidden rounded-lg border border-white/[0.06] bg-[#0a0a0c] font-mono text-[10px]">
           {/* Diff header */}
           <div className="flex items-center justify-between border-b border-white/[0.04] px-3 py-1.5">
-            <span className="text-white/25">src/middleware/auth.ts</span>
+            <span className="text-white/40">src/middleware/auth.ts</span>
             <div className="flex gap-2">
-              <span className="text-emerald-400/50">+12</span>
-              <span className="text-red-400/50">-3</span>
+              <span className="text-emerald-400/70">+12</span>
+              <span className="text-red-400/70">-3</span>
             </div>
           </div>
           {/* Diff lines */}
           <div className="space-y-0 p-0">
-            <div className="px-3 py-0.5 text-white/20">
-              <span className="mr-3 text-white/10">14</span>
+            <div className="px-3 py-0.5 text-white/35">
+              <span className="mr-3 text-white/20">14</span>
               export function authMiddleware(req, res, next) {"{"}
             </div>
-            <div className="border-l-2 border-red-500/40 bg-red-500/[0.06] px-3 py-0.5 text-white/25">
-              <span className="mr-3 text-red-400/30">15</span>
+            <div className="border-l-2 border-red-400/50 bg-red-500/[0.10] px-3 py-0.5 text-white/40">
+              <span className="mr-3 text-red-400/50">15</span>
               {"  "}const token = req.headers.auth
             </div>
-            <div className="border-l-2 border-emerald-500/40 bg-emerald-500/[0.06] px-3 py-0.5 text-white/35">
-              <span className="mr-3 text-emerald-400/30">15</span>
+            <div className="border-l-2 border-emerald-400/50 bg-emerald-500/[0.10] px-3 py-0.5 text-white/50">
+              <span className="mr-3 text-emerald-400/50">15</span>
               {"  "}const token = req.headers.authorization?.split(&quot; &quot;)[1]
             </div>
-            <div className="border-l-2 border-emerald-500/40 bg-emerald-500/[0.06] px-3 py-0.5 text-white/35">
-              <span className="mr-3 text-emerald-400/30">16</span>
+            <div className="border-l-2 border-emerald-400/50 bg-emerald-500/[0.10] px-3 py-0.5 text-white/50">
+              <span className="mr-3 text-emerald-400/50">16</span>
               {"  "}if (!token) return res.status(401).json({"{"} error: &quot;Unauthorized&quot; {"}"})
             </div>
-            <div className="px-3 py-0.5 text-white/20">
-              <span className="mr-3 text-white/10">17</span>
+            <div className="px-3 py-0.5 text-white/35">
+              <span className="mr-3 text-white/20">17</span>
               {"  "}try {"{"}
             </div>
-            <div className="border-l-2 border-red-500/40 bg-red-500/[0.06] px-3 py-0.5 text-white/25">
-              <span className="mr-3 text-red-400/30">18</span>
+            <div className="border-l-2 border-red-400/50 bg-red-500/[0.10] px-3 py-0.5 text-white/40">
+              <span className="mr-3 text-red-400/50">18</span>
               {"    "}const user = verify(token)
             </div>
-            <div className="border-l-2 border-emerald-500/40 bg-emerald-500/[0.06] px-3 py-0.5 text-white/35">
-              <span className="mr-3 text-emerald-400/30">18</span>
+            <div className="border-l-2 border-emerald-400/50 bg-emerald-500/[0.10] px-3 py-0.5 text-white/50">
+              <span className="mr-3 text-emerald-400/50">18</span>
               {"    "}const user = await verifyJWT(token, SECRET)
             </div>
-            <div className="border-l-2 border-emerald-500/40 bg-emerald-500/[0.06] px-3 py-0.5 text-white/35">
-              <span className="mr-3 text-emerald-400/30">19</span>
+            <div className="border-l-2 border-emerald-400/50 bg-emerald-500/[0.10] px-3 py-0.5 text-white/50">
+              <span className="mr-3 text-emerald-400/50">19</span>
               {"    "}req.user = {"{"} id: user.sub, role: user.role {"}"}
             </div>
-            <div className="px-3 py-0.5 text-white/20">
-              <span className="mr-3 text-white/10">20</span>
+            <div className="px-3 py-0.5 text-white/35">
+              <span className="mr-3 text-white/20">20</span>
               {"    "}next()
             </div>
           </div>
           {/* Accept/reject bar */}
           <div className="flex items-center justify-end gap-2 border-t border-white/[0.04] px-3 py-1.5">
-            <span className="rounded border border-white/[0.08] px-2 py-0.5 text-[9px] text-white/20">
+            <span className="rounded border border-white/[0.12] px-2 py-0.5 text-[9px] text-white/35">
               Reject
             </span>
             <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] text-emerald-400/60">
