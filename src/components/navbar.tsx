@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
@@ -237,9 +238,11 @@ export function Navbar() {
             {/* Left: Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-70">
-                <img
+                <Image
                   src="/creor-nobg-icon.png"
                   alt="Creor"
+                  width={44}
+                  height={44}
                   className="h-11 w-11"
                 />
                 <span className="text-[17px] font-semibold tracking-[-0.03em]">

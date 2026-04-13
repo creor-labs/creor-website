@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const GITHUB_CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID ?? "";
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
@@ -212,7 +213,7 @@ function LoginContent() {
 
         {/* Top-left logo */}
         <Link href="/" className="absolute top-10 left-10 z-10 flex items-center gap-2.5">
-          <img src="/creor-nobg-icon.png" alt="Creor" className="h-9 w-9" />
+          <Image src="/creor-nobg-icon.png" alt="Creor" width={36} height={36} className="h-9 w-9" />
           <span className="text-lg font-semibold tracking-tight">Creor</span>
         </Link>
 
@@ -287,9 +288,11 @@ function LoginContent() {
           {/* Logo (mobile only) */}
           <div className="mb-8 text-center lg:hidden">
             <Link href="/" className="inline-flex items-center gap-2.5">
-              <img
+              <Image
                 src="/creor-nobg-icon.png"
                 alt="Creor"
+                width={48}
+                height={48}
                 className="h-12 w-12"
               />
             </Link>

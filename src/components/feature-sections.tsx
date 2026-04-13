@@ -95,6 +95,91 @@ function ExploreAgentVisual() {
   return <AnimatedExploreGraph />;
 }
 
+/* ── Visual: BYOK ── */
+
+function BYOKVisual() {
+  const providers = [
+    { name: "Anthropic", color: "bg-amber-500/20 text-amber-400 border-amber-500/20", letter: "A" },
+    { name: "OpenAI", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/20", letter: "O" },
+    { name: "Google", color: "bg-blue-500/20 text-blue-400 border-blue-500/20", letter: "G" },
+    { name: "Groq", color: "bg-orange-500/20 text-orange-400 border-orange-500/20", letter: "G" },
+    { name: "Azure", color: "bg-cyan-500/20 text-cyan-400 border-cyan-500/20", letter: "Az" },
+    { name: "Custom", color: "bg-white/[0.08] text-white/50 border-white/[0.10]", letter: "+" },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* API key input mock */}
+      <div className="rounded-lg border border-white/[0.08] bg-[#111113] p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <span className="text-[11px] font-medium text-white/40">
+            API Key
+          </span>
+          <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-medium text-emerald-400/70">
+            Connected
+          </span>
+        </div>
+        <div className="flex items-center gap-2 rounded-md border border-white/[0.08] bg-white/[0.03] px-3 py-2">
+          <span className="font-mono text-[12px] text-white/30">
+            sk-ant-•••••••••••••••••••••••
+          </span>
+          <span className="ml-auto text-[9px] text-white/20">Anthropic</span>
+        </div>
+      </div>
+
+      {/* Provider grid */}
+      <div>
+        <span className="mb-2 block text-[10px] font-medium uppercase tracking-widest text-white/25">
+          Choose your provider
+        </span>
+        <div className="grid grid-cols-3 gap-2">
+          {providers.map((p) => (
+            <div
+              key={p.name}
+              className={`flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors hover:bg-white/[0.04] ${p.color}`}
+            >
+              <span className="flex h-6 w-6 items-center justify-center rounded text-[10px] font-bold">
+                {p.letter}
+              </span>
+              <span className="text-[11px] font-medium">{p.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Two auth paths */}
+      <div className="grid grid-cols-2 gap-2">
+        <div className="rounded-lg border border-indigo-500/15 bg-indigo-500/[0.04] p-3">
+          <p className="text-[11px] font-medium text-indigo-300/70">
+            Your own API key
+          </p>
+          <p className="mt-0.5 text-[9px] text-white/25">
+            Paste key, no limits from us. Pay your provider directly.
+          </p>
+        </div>
+        <div className="rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+          <p className="text-[11px] font-medium text-white/50">
+            Creor Auth
+          </p>
+          <p className="mt-0.5 text-[9px] text-white/25">
+            Sign in with GitHub/Google. Use Creor&apos;s managed keys.
+          </p>
+        </div>
+      </div>
+
+      {/* Unlimited badge */}
+      <div className="flex items-center justify-center gap-2 rounded-lg border border-dashed border-white/[0.08] py-2.5">
+        <span className="text-[12px] text-white/20">
+          No usage caps from Creor.
+        </span>
+        <span className="rounded-full bg-white/[0.06] px-2.5 py-0.5 text-[10px] font-medium text-white/40">
+          Unlimited
+        </span>
+      </div>
+    </div>
+  );
+}
+
 /* ── Section 2-5: Two-Column Feature Sections ── */
 
 function FeatureSection({
@@ -223,7 +308,7 @@ function ToolsMCPVisual() {
     { name: "grep", desc: "Search content", icon: "🔍" },
     { name: "glob", desc: "Find files", icon: "📂" },
     { name: "lsp", desc: "Go to definition", icon: "🔗" },
-    { name: "git", desc: "Version control", icon: "🌿" },
+    { name: "git", desc: "Version control", icon: "git" },
     { name: "web", desc: "Fetch URLs", icon: "🌐" },
   ];
 
@@ -288,7 +373,15 @@ function ToolsMCPVisual() {
               key={tool.name}
               className="group rounded-lg border border-white/[0.06] bg-white/[0.04] px-3 py-2.5 transition-colors hover:border-white/[0.12] hover:bg-white/[0.06]"
             >
-              <div className="mb-1 text-[13px]">{tool.icon}</div>
+              <div className="mb-1 text-[13px]">
+                {tool.icon === "git" ? (
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-[14px] w-[14px] text-white/50">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                ) : (
+                  tool.icon
+                )}
+              </div>
               <div className="font-mono text-[11px] text-white/50">
                 {tool.name}
               </div>
@@ -371,7 +464,7 @@ function SnapshotDiffVisual() {
         <div className="relative space-y-0 pl-4">
           {/* Vertical line */}
           <div className="absolute left-[7px] top-2 bottom-2 w-px bg-white/[0.12]" />
-          {snapshots.map((snap, i) => (
+          {snapshots.map((snap) => (
             <div key={snap.id} className="relative flex items-start gap-3 py-2">
               {/* Dot */}
               <div
@@ -452,11 +545,21 @@ export function FeatureSections() {
         </div>
       </section>
 
+      {/* Section 1.5: BYOK */}
+      <FeatureSection
+        heading="Bring your own key. Use it unlimited."
+        description="Sign in with your API key from any provider — or authenticate through Creor. No middleman, no usage caps from us. Your key, your quota, your bill. Switch providers anytime."
+        label="1.0 Bring Your Own Key"
+        reverse
+      >
+        <BYOKVisual />
+      </FeatureSection>
+
       {/* Section 2: Repo Map + Context */}
       <FeatureSection
         heading="Your codebase, fully understood"
         description="Repo Map builds a structural overview of your entire project — auto-injected into every session. Context settings let you tune what's included: git state, file trees, token budgets. The AI doesn't guess your architecture — it sees it."
-        label="1.0 Codebase Intelligence"
+        label="2.0 Codebase Intelligence"
       >
         <RepoMapVisual />
       </FeatureSection>
@@ -465,7 +568,7 @@ export function FeatureSections() {
       <FeatureSection
         heading="Teach it your standards"
         description="Skills embed team knowledge as interconnected markdown graphs — coding patterns, architecture decisions, domain context. Rules enforce policies in every AI interaction. Define once, apply everywhere."
-        label="2.0 Skills & Rules"
+        label="3.0 Skills & Rules"
         reverse
       >
         <SkillsRulesVisual />
@@ -475,7 +578,7 @@ export function FeatureSections() {
       <FeatureSection
         heading="Extend with anything"
         description="25+ built-in tools for file ops, search, LSP, and analysis. Connect external services through MCP — Notion, Gmail, GitHub, or any custom server. Add your own tools with a single TypeScript file."
-        label="3.0 Tools & MCP"
+        label="4.0 Tools & MCP"
       >
         <ToolsMCPVisual />
       </FeatureSection>
@@ -484,7 +587,7 @@ export function FeatureSections() {
       <FeatureSection
         heading="Smart terminal, only when you need it"
         description="Most commands run silently in the background. But when the agent detects a long-running process, a dev server, or a command that needs your input — it opens a real interactive terminal automatically. Output streams back to the agent so it always knows what happened."
-        label="3.5 Interactive Terminal"
+        label="5.0 Interactive Terminal"
         reverse
       >
         <AnimatedInteractiveTerminal />
@@ -494,7 +597,7 @@ export function FeatureSections() {
       <FeatureSection
         heading="Complete control, always"
         description="Hooks intercept every lifecycle event — before tool execution, on session start, after failures. Pattern-based permissions gate access per tool, per file, per agent. Nothing happens without your say."
-        label="4.0 Hooks & Permissions"
+        label="6.0 Hooks & Permissions"
       >
         <AnimatedPermissions />
       </FeatureSection>
@@ -503,7 +606,7 @@ export function FeatureSections() {
       <FeatureSection
         heading="Review every change. Revert any moment."
         description="Every edit is shown as a diff before it touches your code — accept, reject, or retry. Snapshot revert lets you roll back specific files to any prior state in the session. Nothing is permanent until you say so."
-        label="5.0 Snapshot & Diff"
+        label="7.0 Snapshot & Diff"
         reverse
       >
         <SnapshotDiffVisual />

@@ -3,11 +3,16 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Download, Apple, Monitor, CheckCircle2 } from "lucide-react";
 import { generatePageMetadata } from "@/lib/metadata";
+import { WaitlistForm } from "./waitlist-form";
+
+/* ─── Feature flag: flip to false when downloads are ready ─── */
+const SHOW_WAITLIST = true;
 
 export const metadata: Metadata = generatePageMetadata({
-  title: "Download",
-  description:
-    "Download Creor — the AI-native code editor. Available for macOS and Windows.",
+  title: SHOW_WAITLIST ? "Get Early Access — Creor" : "Download",
+  description: SHOW_WAITLIST
+    ? "Join the Creor waitlist. Be the first to know when the AI-native code editor launches."
+    : "Download Creor — the AI-native code editor. Available for macOS and Windows.",
   path: "/download",
 });
 
@@ -50,6 +55,91 @@ const FEATURES = [
 ];
 
 export default function DownloadPage() {
+  if (SHOW_WAITLIST) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+
+        <main className="mx-auto max-w-[640px] px-6 pt-32 pb-20">
+          {/* Hero */}
+          <div className="text-center">
+            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-b from-indigo-500/20 to-indigo-500/5">
+              <Download className="h-6 w-6 text-indigo-400" />
+            </div>
+            <span className="inline-block rounded-full bg-indigo-500/15 px-3 py-1 text-[11px] font-medium text-indigo-400">
+              Coming Soon
+            </span>
+            <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+              Get early access
+            </h1>
+            <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/40">
+              Creor is almost ready. Join the waitlist and be the first to
+              download when we launch.
+            </p>
+          </div>
+
+          {/* Waitlist form */}
+          <WaitlistForm />
+
+          {/* What you'll get */}
+          <div className="mt-14 rounded-xl border border-white/[0.08] bg-white/[0.02] p-6">
+            <h2 className="text-[14px] font-semibold text-white/60">
+              What you&apos;ll get
+            </h2>
+            <div className="mt-4 space-y-3">
+              {[
+                {
+                  title: "Early access",
+                  desc: "Be among the first to try Creor before public launch",
+                },
+                {
+                  title: "Platform choice",
+                  desc: "macOS (Apple Silicon & Intel) and Windows on day one",
+                },
+                {
+                  title: "Free to start",
+                  desc: "Bring your own API key and use it unlimited — no charges from us",
+                },
+              ].map((item) => (
+                <div key={item.title} className="flex items-start gap-3">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400/60" />
+                  <div>
+                    <p className="text-[13px] font-medium text-white/55">
+                      {item.title}
+                    </p>
+                    <p className="text-[12px] text-white/25">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Platforms preview */}
+          <div className="mt-6 grid grid-cols-3 gap-3">
+            {[
+              { icon: Apple, name: "macOS Silicon", tag: "arm64" },
+              { icon: Apple, name: "macOS Intel", tag: "x64" },
+              { icon: Monitor, name: "Windows", tag: "x64" },
+            ].map((p) => (
+              <div
+                key={p.name}
+                className="flex flex-col items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] py-5"
+              >
+                <p.icon className="h-5 w-5 text-white/30" />
+                <span className="text-[11px] text-white/40">{p.name}</span>
+                <span className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[9px] text-white/20">
+                  {p.tag}
+                </span>
+              </div>
+            ))}
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -141,9 +231,7 @@ export default function DownloadPage() {
 
         {/* Install via terminal */}
         <div className="mt-6 rounded-xl border border-white/[0.08] bg-white/[0.02] p-8">
-          <h2 className="text-lg font-semibold">
-            Or install via terminal
-          </h2>
+          <h2 className="text-lg font-semibold">Or install via terminal</h2>
           <p className="mt-1.5 text-[13px] text-white/30">
             One command. Auto-detects your OS and architecture.
           </p>
@@ -153,7 +241,8 @@ export default function DownloadPage() {
             </code>
           </div>
           <p className="mt-3 text-[11px] text-white/20">
-            Works on macOS (Apple Silicon &amp; Intel) and Windows (via WSL or Git Bash).
+            Works on macOS (Apple Silicon &amp; Intel) and Windows (via WSL or
+            Git Bash).
           </p>
         </div>
       </main>

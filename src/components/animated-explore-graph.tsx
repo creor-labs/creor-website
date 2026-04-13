@@ -231,6 +231,7 @@ function ExploreGraphInner() {
   }, [fitView]);
 
   // Animation cycle
+  const runCycleRef = useRef<() => void>(() => {});
   const runCycle = useCallback(() => {
     cycleRef.current.forEach(clearTimeout);
     cycleRef.current = [];
@@ -246,9 +247,13 @@ function ExploreGraphInner() {
     // Reset and loop
     t(() => {
       setPhase("idle");
-      setTimeout(() => runCycle(), 500);
+      setTimeout(() => runCycleRef.current(), 500);
     }, 6000);
   }, []);
+
+  useEffect(() => {
+    runCycleRef.current = runCycle;
+  }, [runCycle]);
 
   // Trigger on scroll
   useEffect(() => {

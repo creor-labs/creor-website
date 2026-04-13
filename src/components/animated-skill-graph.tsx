@@ -55,7 +55,7 @@ function SkillNode({ data }: NodeProps) {
 
 /* ── Custom Animated Edge ── */
 
-function AnimatedEdge({ id, sourceX, sourceY, targetX, targetY, data, ...rest }: EdgeProps) {
+function AnimatedEdge({ id, sourceX, sourceY, targetX, targetY, data }: EdgeProps) {
   const d = data as { active?: boolean } | undefined;
   const [edgePath] = getStraightPath({ sourceX, sourceY, targetX, targetY });
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 export function Footer() {
@@ -9,9 +10,11 @@ export function Footer() {
           {/* Brand column */}
           <div>
             <Link href="/" className="mb-4 flex items-center gap-2.5 transition-opacity hover:opacity-70">
-              <img
+              <Image
                 src="/creor-nobg-icon.png"
                 alt="Creor"
+                width={36}
+                height={36}
                 className="h-9 w-9"
               />
               <span className="text-[16px] font-semibold tracking-[-0.03em] text-white">

@@ -13,6 +13,7 @@ import {
   Shield,
   Paperclip,
 } from "lucide-react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import {
   DEMO_PROMPT,
@@ -67,9 +68,11 @@ function StepRow({ step }: { step: DemoStep }) {
 function WelcomeView() {
   return (
     <div className="flex h-full flex-col items-center justify-center px-4">
-      <img
+      <Image
         src="/creor-nobg-icon.png"
         alt="Creor"
+        width={40}
+        height={40}
         className="mb-3 h-10 w-10 opacity-30"
       />
       <p className="mb-1 text-[13px] font-medium text-white/60">
