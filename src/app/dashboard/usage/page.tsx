@@ -5,7 +5,7 @@ import { api } from "@/lib/api";
 import {
   BarChart3, Cpu, DollarSign, Zap, Download, Search,
   ArrowUpRight, ArrowDownRight, ChevronUp, ChevronDown,
-  Crown,
+  Crown, Calendar,
 } from "lucide-react";
 
 interface UsageSummary {
@@ -80,17 +80,27 @@ export default function UsagePage() {
   const [daily, setDaily] = useState<DailyUsage[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [rangeIdx, setRangeIdx] = useState(1); // default 30D
+  const [customStart, setCustomStart] = useState("");
+  const [customEnd, setCustomEnd] = useState("");
+  const [showCustom, setShowCustom] = useState(false);
+  const [fetchKey, setFetchKey] = useState(0); // bump to re-fetch
   const [sortKey, setSortKey] = useState<SortKey>("cost");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const activeRange = useMemo(() => {
+    if (showCustom && customStart && customEnd) {
+      return { start: new Date(customStart).toISOString(), end: new Date(customEnd + "T23:59:59").toISOString() };
+    }
+    return getDateRange(RANGES[rangeIdx].days);
+  }, [rangeIdx, showCustom, customStart, customEnd, fetchKey]);
+
   useEffect(() => {
     let stale = false;
-    const range = getDateRange(RANGES[rangeIdx].days);
     Promise.all([
-      api.getUsage(range),
-      api.getUsageByModel(range),
-      api.getUsageDaily(range),
+      api.getUsage(activeRange),
+      api.getUsageByModel(activeRange),
+      api.getUsageDaily(activeRange),
     ])
       .then(([s, m, d]) => {
         if (stale) return;
@@ -101,7 +111,7 @@ export default function UsagePage() {
       })
       .catch(() => {});
     return () => { stale = true; };
-  }, [rangeIdx]);
+  }, [activeRange]);
 
   const loading = !loaded;
 
@@ -145,8 +155,7 @@ export default function UsagePage() {
   };
 
   const handleExport = () => {
-    const range = getDateRange(RANGES[rangeIdx].days);
-    const url = api.getUsageExportUrl(range);
+    const url = api.getUsageExportUrl(activeRange);
     window.open(url, "_blank");
   };
 
@@ -178,15 +187,15 @@ export default function UsagePage() {
           <h1 className="text-2xl font-bold tracking-tight">Usage</h1>
           <p className="mt-1 text-sm text-muted-foreground">{rangeLabel}</p>
         </div>
-        <div className="flex items-center gap-2">
-          {/* Date Range Picker */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Preset Range Buttons */}
           <div className="flex items-center rounded-lg border border-border bg-card overflow-hidden">
             {RANGES.map((r, i) => (
               <button
                 key={r.label}
-                onClick={() => setRangeIdx(i)}
+                onClick={() => { setRangeIdx(i); setShowCustom(false); }}
                 className={`px-3 py-1.5 text-xs font-medium transition-colors ${
-                  rangeIdx === i
+                  rangeIdx === i && !showCustom
                     ? "bg-foreground text-background"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
@@ -194,6 +203,17 @@ export default function UsagePage() {
                 {r.label}
               </button>
             ))}
+            <button
+              onClick={() => setShowCustom(!showCustom)}
+              className={`flex items-center gap-1 px-3 py-1.5 text-xs font-medium transition-colors ${
+                showCustom
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Calendar className="h-3 w-3" />
+              Custom
+            </button>
           </div>
           <button
             onClick={handleExport}
@@ -203,6 +223,34 @@ export default function UsagePage() {
             CSV
           </button>
         </div>
+      </div>
+
+      {/* Custom Date Range */}
+      {showCustom && (
+        <div className="mb-8 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card px-5 py-3">
+          <span className="text-xs text-muted-foreground">From</span>
+          <input
+            type="date"
+            value={customStart}
+            onChange={(e) => setCustomStart(e.target.value)}
+            className="h-8 rounded-lg border border-border bg-background px-3 text-xs outline-none transition-colors focus:border-foreground/30 [color-scheme:dark]"
+          />
+          <span className="text-xs text-muted-foreground">to</span>
+          <input
+            type="date"
+            value={customEnd}
+            onChange={(e) => setCustomEnd(e.target.value)}
+            className="h-8 rounded-lg border border-border bg-background px-3 text-xs outline-none transition-colors focus:border-foreground/30 [color-scheme:dark]"
+          />
+          <button
+            onClick={() => setFetchKey((k) => k + 1)}
+            disabled={!customStart || !customEnd}
+            className="h-8 rounded-lg bg-foreground px-4 text-xs font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-40"
+          >
+            Apply
+          </button>
+        </div>
+      )}
       </div>
 
       {/* Summary Stats */}
