@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { Download, Apple, Monitor, CheckCircle2, Gift, Sparkles, Key, Users } from "lucide-react";
+import { Download, Apple, Monitor, CheckCircle2, Gift, Key, Users } from "lucide-react";
+import { ShareButton } from "./share-button";
 import { generatePageMetadata } from "@/lib/metadata";
 import { WaitlistForm } from "./waitlist-form";
 
@@ -58,138 +59,137 @@ export default function DownloadPage() {
   if (SHOW_WAITLIST) {
     return (
       <div className="relative min-h-screen overflow-hidden bg-background">
-        {/* Background decoration */}
-        <div
-          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 h-[600px] w-[900px] opacity-[0.07]"
-          style={{
-            background:
-              "radial-gradient(ellipse at center, rgba(129,140,248,0.8) 0%, rgba(168,85,247,0.3) 40%, transparent 70%)",
-          }}
-        />
-        <svg
-          className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.02]"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        {/* Full-page background */}
+        <svg className="pointer-events-none absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="wgrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-              <circle cx="20" cy="20" r="0.6" fill="white" />
+            <pattern id="wl-grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M60 0H0v60" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" />
             </pattern>
+            <radialGradient id="wl-fade" cx="50%" cy="0%" r="70%">
+              <stop offset="0%" stopColor="rgba(129,140,248,0.08)" />
+              <stop offset="50%" stopColor="rgba(168,85,247,0.04)" />
+              <stop offset="100%" stopColor="transparent" />
+            </radialGradient>
           </defs>
-          <rect width="100%" height="100%" fill="url(#wgrid)" />
+          <rect width="100%" height="100%" fill="url(#wl-grid)" />
+          <rect width="100%" height="100%" fill="url(#wl-fade)" />
         </svg>
+        <div className="pointer-events-none absolute top-[20%] left-[10%] h-[300px] w-[300px] rounded-full bg-indigo-500/[0.04] blur-[100px]" />
+        <div className="pointer-events-none absolute top-[40%] right-[5%] h-[250px] w-[250px] rounded-full bg-purple-500/[0.03] blur-[80px]" />
+        <div className="pointer-events-none absolute bottom-[10%] left-[30%] h-[200px] w-[200px] rounded-full bg-amber-500/[0.03] blur-[80px]" />
 
         <Navbar />
 
-        <main className="relative z-10 mx-auto max-w-[860px] px-6 pt-32 pb-20">
-          {/* Hero */}
-          <div className="text-center">
-            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-b from-indigo-500/20 to-indigo-500/5 shadow-[0_0_60px_rgba(129,140,248,0.2)]">
-              <Sparkles className="h-7 w-7 text-indigo-400" />
+        <main className="relative z-10 px-6 pt-28 pb-20">
+          {/* Hero — full width */}
+          <div className="mx-auto max-w-[700px] text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/[0.06] px-4 py-1.5">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-indigo-400" />
+              <span className="text-[12px] font-medium text-indigo-400">
+                Launching soon
+              </span>
             </div>
-            <span className="inline-block rounded-full bg-indigo-500/15 px-3 py-1 text-[11px] font-medium text-indigo-400">
-              Coming Soon
-            </span>
-            <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-              Get early access
+            <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+              Be the first to try{" "}
+              <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-300 bg-clip-text text-transparent">
+                Creor
+              </span>
             </h1>
-            <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed text-white/40">
-              Creor is almost ready. Join the waitlist and be the first to know
-              when we launch.
+            <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-white/40">
+              The AI-native code editor with specialized agents, BYOK support,
+              and full control over every action. Join the waitlist.
             </p>
           </div>
 
-          {/* Waitlist form */}
-          <div className="mx-auto max-w-[560px]">
+          {/* Waitlist form — full width contained */}
+          <div className="mx-auto mt-10 max-w-[540px]">
             <WaitlistForm />
           </div>
 
-          {/* Two-column layout */}
-          <div className="mt-14 grid gap-5 md:grid-cols-[1.1fr_1fr]">
-            {/* Early bird offer */}
-            <div className="overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.06] to-orange-500/[0.02]">
-              <div className="flex items-center gap-2.5 border-b border-amber-500/10 bg-amber-500/[0.04] px-5 py-2.5">
+          {/* Share */}
+          <div className="mx-auto mt-4 flex justify-center">
+            <ShareButton />
+          </div>
+
+          {/* Three-column features */}
+          <div className="mx-auto mt-16 grid max-w-[1100px] gap-5 md:grid-cols-3">
+            {/* Early bird */}
+            <div className="overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-b from-amber-500/[0.06] to-transparent">
+              <div className="flex items-center gap-2 border-b border-amber-500/10 bg-amber-500/[0.04] px-4 py-2">
                 <Gift className="h-4 w-4 text-amber-400" />
-                <span className="text-[12px] font-semibold text-amber-300">
-                  Early Bird Reward
+                <span className="text-[11px] font-semibold text-amber-300">
+                  Early Bird
                 </span>
-                <span className="ml-auto rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium text-amber-400/80">
-                  First 500 users
+                <span className="ml-auto rounded-full bg-amber-500/15 px-2 py-0.5 text-[9px] font-medium text-amber-400/80">
+                  First 500
                 </span>
               </div>
               <div className="p-5">
-                <h3 className="text-xl font-bold text-white/85">
-                  3 months free
-                </h3>
+                <h3 className="text-2xl font-bold text-white/85">3 months free</h3>
                 <p className="mt-1 text-[13px] text-white/35">
-                  BYOK plan worth <span className="line-through text-white/25">$27</span>{" "}
-                  <span className="font-semibold text-amber-400/80">$0</span> — first 500 waitlist members
+                  BYOK plan worth{" "}
+                  <span className="line-through text-white/20">$27</span>{" "}
+                  <span className="font-bold text-amber-400">$0</span>
                 </p>
-
-                <div className="mt-5 space-y-2.5">
-                  <div className="flex items-start gap-3 rounded-xl border border-indigo-500/15 bg-indigo-500/[0.04] p-3.5">
-                    <Key className="mt-0.5 h-4 w-4 shrink-0 text-indigo-400/70" />
-                    <div>
-                      <p className="text-[12px] font-medium text-white/60">
-                        Bring Your Own Key
-                      </p>
-                      <p className="mt-0.5 text-[11px] text-white/25">
-                        Use your API key from any provider. No usage caps. $9/mo after free period.
-                      </p>
+                <div className="mt-4 space-y-2">
+                  <div className="rounded-lg border border-indigo-500/15 bg-indigo-500/[0.04] p-3">
+                    <div className="flex items-center gap-2">
+                      <Key className="h-3.5 w-3.5 text-indigo-400/70" />
+                      <span className="text-[11px] font-medium text-white/60">Bring Your Own Key</span>
                     </div>
+                    <p className="mt-1 text-[10px] text-white/25">
+                      Any provider. No caps. $9/mo after.
+                    </p>
                   </div>
-                  <div className="flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5">
-                    <Users className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400/70" />
-                    <div>
-                      <p className="text-[12px] font-medium text-white/60">
-                        Or use Creor Auth
-                      </p>
-                      <p className="mt-0.5 text-[11px] text-white/25">
-                        Sign in with GitHub/Google. Managed access to all providers.
-                      </p>
+                  <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
+                    <div className="flex items-center gap-2">
+                      <Users className="h-3.5 w-3.5 text-emerald-400/70" />
+                      <span className="text-[11px] font-medium text-white/60">Creor Auth</span>
                     </div>
+                    <p className="mt-1 text-[10px] text-white/25">
+                      GitHub/Google login. Managed access.
+                    </p>
                   </div>
                 </div>
-
-                <div className="mt-4 flex items-center gap-2.5 rounded-lg bg-white/[0.03] px-3.5 py-2.5">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-500/15 text-[12px]">
-                    🎟
-                  </div>
-                  <p className="text-[10px] text-white/30">
-                    Coupon codes emailed at launch
-                  </p>
+                <div className="mt-3 flex items-center gap-2 rounded-md bg-white/[0.03] px-3 py-2">
+                  <span className="text-[11px]">🎟</span>
+                  <span className="text-[10px] text-white/30">Coupons emailed at launch</span>
                 </div>
               </div>
             </div>
 
             {/* What's included */}
-            <div className="flex flex-col gap-5">
-              <div className="flex-1 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-                <h2 className="text-[14px] font-semibold text-white/60">
-                  What&apos;s included
-                </h2>
-                <div className="mt-4 space-y-2.5">
-                  {[
-                    "AI agents that write, plan, and debug",
-                    "Claude, GPT-4, Gemini, and 15+ more",
-                    "25+ built-in tools",
-                    "MCP for external integrations",
-                    "Code never leaves your machine",
-                    "Full hooks & permissions control",
-                  ].map((f) => (
-                    <div key={f} className="flex items-center gap-2.5">
-                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-400/60" />
-                      <span className="text-[12px] text-white/40">{f}</span>
-                    </div>
-                  ))}
-                </div>
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
+              <h2 className="mb-4 text-[14px] font-semibold text-white/60">
+                What&apos;s included
+              </h2>
+              <div className="space-y-3">
+                {[
+                  "AI agents that write, plan, and debug",
+                  "Claude, GPT-4, Gemini, 15+ providers",
+                  "25+ built-in tools",
+                  "MCP for external integrations",
+                  "Code never leaves your machine",
+                  "Full hooks & permissions control",
+                  "Interactive terminal when needed",
+                  "Snapshot revert & diff preview",
+                ].map((f) => (
+                  <div key={f} className="flex items-center gap-2.5">
+                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-400/60" />
+                    <span className="text-[12px] text-white/40">{f}</span>
+                  </div>
+                ))}
               </div>
+            </div>
 
+            {/* Right column: platforms + how it works */}
+            <div className="flex flex-col gap-5">
               {/* Platforms */}
               <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
                 <h2 className="mb-3 text-[14px] font-semibold text-white/60">
                   Available on
                 </h2>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="space-y-2">
                   {[
                     { icon: Apple, name: "macOS", desc: "Apple Silicon & Intel" },
                     { icon: Monitor, name: "Windows", desc: "Windows 10/11 (64-bit)" },
@@ -203,6 +203,28 @@ export default function DownloadPage() {
                         <p className="text-[12px] font-medium text-white/50">{p.name}</p>
                         <p className="text-[10px] text-white/20">{p.desc}</p>
                       </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* How it works */}
+              <div className="flex-1 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
+                <h2 className="mb-4 text-[14px] font-semibold text-white/60">
+                  How it works
+                </h2>
+                <div className="space-y-4">
+                  {[
+                    { step: "1", text: "Join the waitlist with your email" },
+                    { step: "2", text: "We notify you when Creor launches" },
+                    { step: "3", text: "First 500 get a free 3-month coupon" },
+                    { step: "4", text: "Download, paste your API key, start coding" },
+                  ].map((s) => (
+                    <div key={s.step} className="flex items-start gap-3">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/[0.06] text-[10px] font-bold text-white/40">
+                        {s.step}
+                      </span>
+                      <span className="text-[12px] text-white/35">{s.text}</span>
                     </div>
                   ))}
                 </div>
