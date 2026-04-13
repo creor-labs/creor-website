@@ -78,7 +78,7 @@ export default function UsagePage() {
   const [summary, setSummary] = useState<UsageSummary | null>(null);
   const [byModel, setByModel] = useState<ModelUsage[]>([]);
   const [daily, setDaily] = useState<DailyUsage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(false);
   const [rangeIdx, setRangeIdx] = useState(1); // default 30D
   const [sortKey, setSortKey] = useState<SortKey>("cost");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
@@ -86,7 +86,6 @@ export default function UsagePage() {
 
   useEffect(() => {
     let stale = false;
-    setLoading(true);
     const range = getDateRange(RANGES[rangeIdx].days);
     Promise.all([
       api.getUsage(range),
@@ -98,11 +97,13 @@ export default function UsagePage() {
         setSummary(s);
         setByModel(m);
         setDaily(d);
+        setLoaded(true);
       })
-      .catch(() => {})
-      .finally(() => { if (!stale) setLoading(false); });
+      .catch(() => {});
     return () => { stale = true; };
   }, [rangeIdx]);
+
+  const loading = !loaded;
 
   // Sorted + filtered model data
   const filteredModels = useMemo(() => {
