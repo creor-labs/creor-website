@@ -72,12 +72,12 @@ function NotificationsSection() {
               onClick={handleToggle}
               disabled={saving}
               className={`relative h-6 w-11 rounded-full transition-colors disabled:opacity-70 ${
-                productUpdates ? "bg-indigo-500" : "bg-muted"
+                productUpdates ? "bg-indigo-500" : "bg-white/10 border border-white/10"
               }`}
             >
               <span
-                className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
-                  productUpdates ? "translate-x-5" : "translate-x-0"
+                className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full shadow transition-transform ${
+                  productUpdates ? "translate-x-5 bg-white" : "translate-x-0 bg-white/50"
                 }`}
               />
             </button>
