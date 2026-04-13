@@ -2,7 +2,7 @@ import { FadeIn } from "@/components/fade-in";
 import { TokenBudgetSlider } from "@/components/token-budget-slider";
 import { AnimatedRepoMap } from "@/components/animated-repo-map";
 import { AnimatedDiffPreview } from "@/components/animated-diff";
-import { ArrowRight } from "lucide-react";
+
 
 /* ── Section 1: Agent Cards ── */
 
@@ -159,8 +159,8 @@ function FeatureSection({
               <p className="mb-4 text-[14px] leading-relaxed text-white/40">
                 {description}
               </p>
-              <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white/50 transition-colors hover:text-white/70">
-                {label} <ArrowRight className="h-3.5 w-3.5" />
+              <span className="text-[13px] font-medium text-white/50">
+                {label}
               </span>
             </div>
           </div>
