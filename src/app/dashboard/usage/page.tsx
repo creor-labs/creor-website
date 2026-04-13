@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { api } from "@/lib/api";
 import {
   BarChart3, Cpu, DollarSign, Zap, Download, Search,
   ArrowUpRight, ArrowDownRight, ChevronUp, ChevronDown,
-  Calendar, Crown,
+  Crown,
 } from "lucide-react";
 
 interface UsageSummary {
@@ -84,25 +84,25 @@ export default function UsagePage() {
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const fetchData = useCallback(async (days: number) => {
-    setLoading(true);
-    const range = getDateRange(days);
-    try {
-      const [s, m, d] = await Promise.all([
-        api.getUsage(range),
-        api.getUsageByModel(range),
-        api.getUsageDaily(range),
-      ]);
-      setSummary(s);
-      setByModel(m);
-      setDaily(d);
-    } catch { /* ignore */ }
-    setLoading(false);
-  }, []);
-
   useEffect(() => {
-    fetchData(RANGES[rangeIdx].days);
-  }, [rangeIdx, fetchData]);
+    let stale = false;
+    setLoading(true);
+    const range = getDateRange(RANGES[rangeIdx].days);
+    Promise.all([
+      api.getUsage(range),
+      api.getUsageByModel(range),
+      api.getUsageDaily(range),
+    ])
+      .then(([s, m, d]) => {
+        if (stale) return;
+        setSummary(s);
+        setByModel(m);
+        setDaily(d);
+      })
+      .catch(() => {})
+      .finally(() => { if (!stale) setLoading(false); });
+    return () => { stale = true; };
+  }, [rangeIdx]);
 
   // Sorted + filtered model data
   const filteredModels = useMemo(() => {
