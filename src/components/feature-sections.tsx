@@ -1,6 +1,7 @@
 import { FadeIn } from "@/components/fade-in";
 import { TokenBudgetSlider } from "@/components/token-budget-slider";
 import { AnimatedRepoMap } from "@/components/animated-repo-map";
+import { AnimatedSkillGraph } from "@/components/animated-skill-graph";
 import { AnimatedDiffPreview } from "@/components/animated-diff";
 
 
@@ -242,31 +243,7 @@ function SkillsRulesVisual() {
   return (
     <div className="grid gap-8 md:grid-cols-2">
       {/* Skill graph */}
-      <div>
-        <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
-          Skill Graph
-        </span>
-        <div className="space-y-2">
-          <div className="rounded-lg border border-indigo-500/30 bg-indigo-500/[0.08] p-3">
-            <div className="mb-1 text-[11px] font-medium text-indigo-300/80">
-              SKILL.md
-            </div>
-            <div className="text-[10px] text-white/40">
-              Auth system overview
-            </div>
-          </div>
-          <div className="flex gap-2 pl-4">
-            {["[[oauth-flow]]", "[[jwt-tokens]]", "[[middleware]]"].map((link) => (
-              <div
-                key={link}
-                className="rounded border border-white/[0.10] bg-white/[0.06] px-2 py-1 font-mono text-[9px] text-purple-300/60"
-              >
-                {link}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <AnimatedSkillGraph />
 
       {/* Rules list */}
       <div>
