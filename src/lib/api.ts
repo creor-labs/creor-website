@@ -325,16 +325,20 @@ class ApiClient {
 
   // ── Usage ──
 
-  async getUsage() {
+  async getUsage(params?: { start?: string; end?: string }) {
+    const qs = params?.start && params?.end ? `?start=${params.start}&end=${params.end}` : "";
     return this.get<{
       period: { start: string; end: string };
       cost: number;
       tokens: { input: number; output: number };
       requests: number;
-    }>("/api/usage");
+      previousPeriod: { cost: number; requests: number };
+      costChangePercent: number | null;
+    }>(`/api/usage${qs}`);
   }
 
-  async getUsageByModel() {
+  async getUsageByModel(params?: { start?: string; end?: string }) {
+    const qs = params?.start && params?.end ? `?start=${params.start}&end=${params.end}` : "";
     return this.get<
       Array<{
         model: string;
@@ -342,13 +346,19 @@ class ApiClient {
         tokens: { input: number; output: number };
         requests: number;
       }>
-    >("/api/usage/by-model");
+    >(`/api/usage/by-model${qs}`);
   }
 
-  async getUsageDaily() {
+  async getUsageDaily(params?: { start?: string; end?: string }) {
+    const qs = params?.start && params?.end ? `?start=${params.start}&end=${params.end}` : "";
     return this.get<
       Array<{ date: string; cost: number; requests: number }>
-    >("/api/usage/daily");
+    >(`/api/usage/daily${qs}`);
+  }
+
+  getUsageExportUrl(params?: { start?: string; end?: string }) {
+    const qs = params?.start && params?.end ? `?start=${params.start}&end=${params.end}` : "";
+    return `${API_BASE}/api/usage/export${qs}`;
   }
 
   // ── Models ──
