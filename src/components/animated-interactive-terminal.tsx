@@ -334,7 +334,7 @@ export function AnimatedInteractiveTerminal() {
     <div ref={containerRef}>
       <div className="grid items-start gap-6 md:grid-cols-2">
         {/* Left: Agent context */}
-        <div className="min-h-[340px] rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 sm:min-h-[320px]">
+        <div className="min-h-[360px] rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 sm:min-h-[320px]">
           <AgentContextPanel phase={phase} />
         </div>
 

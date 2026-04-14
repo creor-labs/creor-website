@@ -242,12 +242,107 @@ function SkillGraphInner() {
   );
 }
 
-/* ── Exported wrapper with ReactFlowProvider ── */
+/* ── Mobile: compact card layout ── */
+
+function SkillTreeMobile() {
+  return (
+    <div>
+      <span className="mb-3 block font-mono text-[10px] uppercase tracking-widest text-white/35">
+        Skill Graph
+      </span>
+
+      {/* Query */}
+      <div className="mb-4 rounded-lg border border-indigo-500/25 bg-indigo-500/[0.05] px-3 py-2 font-mono text-[11px] text-white/50">
+        <span className="mr-2 text-indigo-400/50">$</span>
+        How does JWT verification work?
+      </div>
+
+      {/* Traced path as stacked cards */}
+      <div className="space-y-2">
+        {/* Root */}
+        <div className="rounded-lg border border-indigo-400/30 bg-indigo-500/[0.08] px-3 py-2">
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-[12px] font-medium text-indigo-300/80">SKILL.md</span>
+            <span className="rounded bg-indigo-500/20 px-1.5 py-0.5 text-[9px] font-medium text-indigo-400/70">ROOT</span>
+          </div>
+          <span className="text-[10px] text-white/30">Auth system</span>
+        </div>
+
+        {/* Arrow */}
+        <div className="flex justify-center text-[10px] text-white/15">↓ resolved 3 modules</div>
+
+        {/* Modules grid */}
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { label: "oauth-flow", active: false },
+            { label: "jwt-tokens", active: true },
+            { label: "middleware", active: false },
+          ].map((mod) => (
+            <div
+              key={mod.label}
+              className={`rounded-lg border px-2 py-2 text-center font-mono text-[10px] ${
+                mod.active
+                  ? "border-indigo-400/30 bg-indigo-500/[0.1] text-indigo-300/80"
+                  : "border-white/[0.06] bg-white/[0.03] text-white/30"
+              }`}
+            >
+              {mod.label}
+              {mod.active && (
+                <div className="mt-0.5 text-[8px] text-indigo-400/50">matched</div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Arrow */}
+        <div className="flex justify-center text-[10px] text-white/15">↓ traced dependencies</div>
+
+        {/* Leaf nodes */}
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { label: "refresh-flow", active: true },
+            { label: "verify", active: true },
+            { label: "rate-limit", active: false },
+          ].map((leaf) => (
+            <div
+              key={leaf.label}
+              className={`rounded-lg border px-2 py-1.5 text-center font-mono text-[10px] ${
+                leaf.active
+                  ? "border-indigo-400/25 bg-indigo-500/[0.06] text-indigo-300/60"
+                  : "border-white/[0.04] bg-white/[0.02] text-white/20"
+              }`}
+            >
+              {leaf.label}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Response */}
+      <div className="mt-3 rounded-lg border border-emerald-500/20 bg-emerald-500/[0.05] px-3 py-2 font-mono text-[11px] text-white/50">
+        <span className="mr-2 text-emerald-400/50">←</span>
+        JWT tokens verified via <span className="text-emerald-400/60">verifyJWT()</span> in auth middleware
+      </div>
+    </div>
+  );
+}
+
+/* ── Exported wrapper ── */
 
 export function AnimatedSkillGraph() {
   return (
-    <ReactFlowProvider>
-      <SkillGraphInner />
-    </ReactFlowProvider>
+    <>
+      {/* Mobile: static tree */}
+      <div className="sm:hidden">
+        <SkillTreeMobile />
+      </div>
+
+      {/* Desktop: animated ReactFlow graph */}
+      <div className="hidden sm:block">
+        <ReactFlowProvider>
+          <SkillGraphInner />
+        </ReactFlowProvider>
+      </div>
+    </>
   );
 }

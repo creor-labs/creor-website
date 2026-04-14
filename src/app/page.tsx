@@ -112,24 +112,24 @@ export default function Home() {
 
           {/* CTA */}
           <FadeIn delay={450}>
-            <div className="mt-16 rounded-2xl border border-white/[0.06] bg-gradient-to-b from-white/[0.03] to-transparent px-6 py-14 text-center sm:mt-20 sm:px-12">
-              <h3 className="mb-3 text-2xl font-bold tracking-tight sm:text-3xl">
+            <div className="mt-12 rounded-2xl border border-white/[0.06] bg-gradient-to-b from-white/[0.03] to-transparent px-5 py-10 text-center sm:mt-20 sm:px-12 sm:py-14">
+              <h3 className="mb-2 text-xl font-bold tracking-tight sm:mb-3 sm:text-3xl">
                 Ship faster. Stay in control.
               </h3>
-              <p className="mb-8 text-[16px] text-foreground-secondary">
+              <p className="mb-5 text-[14px] text-foreground-secondary sm:mb-8 sm:text-[16px]">
                 Join the waitlist. Be the first to try Creor.
               </p>
-              <div className="flex justify-center gap-3">
+              <div className="flex flex-col gap-2.5 sm:flex-row sm:justify-center sm:gap-3">
                 <Link
                   href="/waitlist"
-                  className="glow-pulse group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 text-[16px] font-semibold text-background transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="glow-pulse group inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-[15px] font-semibold text-background transition-all hover:scale-[1.02] active:scale-[0.98] sm:px-6 sm:text-[16px]"
                 >
                   Join Waitlist
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
                 <Link
                   href="/pricing"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-border px-6 py-2.5 text-[16px] font-medium text-foreground transition-colors hover:bg-muted"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-full border border-border px-5 py-2.5 text-[15px] font-medium text-foreground transition-colors hover:bg-muted sm:px-6 sm:text-[16px]"
                 >
                   See Pricing
                 </Link>

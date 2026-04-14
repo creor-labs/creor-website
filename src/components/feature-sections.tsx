@@ -599,7 +599,9 @@ export function FeatureSections() {
         description="Hooks intercept every lifecycle event — before tool execution, on session start, after failures. Pattern-based permissions gate access per tool, per file, per agent. Nothing happens without your say."
         label="6.0 Hooks & Permissions"
       >
-        <AnimatedPermissions />
+        <div className="max-h-[500px] overflow-hidden sm:max-h-none">
+          <AnimatedPermissions />
+        </div>
       </FeatureSection>
 
       {/* Section 7: Snapshot Revert & Diff Preview */}

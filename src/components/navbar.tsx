@@ -240,14 +240,14 @@ export function Navbar() {
 
   return (
     <>
-      <div className="fixed top-0 z-50 w-full flex justify-center px-4 pointer-events-none">
+      <div className="fixed top-0 z-50 w-full flex justify-center px-0 pointer-events-none md:px-4">
         <nav
           ref={navRef}
           className={cn(
             "pointer-events-auto border w-full max-w-[1440px] transition-[background-color,border-color,border-radius,box-shadow,backdrop-filter,margin] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
             scrolled
-              ? "mt-0 border-transparent bg-transparent shadow-none backdrop-blur-none md:mt-3 md:rounded-full md:border-white/[0.10] md:bg-white/[0.05] md:backdrop-blur-2xl md:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-              : "mt-0 md:mt-5 rounded-none border-transparent bg-transparent shadow-none backdrop-blur-none"
+              ? "mt-0 bg-background/90 backdrop-blur-xl border-transparent md:mt-3 md:rounded-full md:border-white/[0.10] md:bg-white/[0.05] md:backdrop-blur-2xl md:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+              : "mt-0 bg-background/80 backdrop-blur-md border-transparent md:mt-5 md:bg-transparent md:backdrop-blur-none"
           )}
         >
           <div className="relative flex h-14 w-full items-center px-3 md:px-6">
