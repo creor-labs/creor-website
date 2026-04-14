@@ -161,10 +161,10 @@ export default function DashboardLayout({
       </aside>
 
       {/* Mobile top bar */}
-      <div className="fixed top-0 left-0 right-0 z-40 flex h-12 items-center justify-between border-b border-white/[0.06] bg-[#0c0c0e] px-4 md:hidden">
-        <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-70">
-          <Image src="/creor-nobg-icon.png" alt="Creor" width={24} height={24} className="h-6 w-6" />
-          <span className="text-[14px] font-bold tracking-[-0.03em] text-white">Creor</span>
+      <div className="fixed top-0 left-0 right-0 z-40 flex h-14 items-center justify-between border-b border-white/[0.06] bg-[#0c0c0e] px-4 md:hidden">
+        <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-70">
+          <Image src="/creor-nobg-icon.png" alt="Creor" width={32} height={32} className="h-8 w-8" />
+          <span className="text-[16px] font-bold tracking-[-0.03em] text-white">Creor</span>
         </Link>
 
         <button
@@ -182,14 +182,14 @@ export default function DashboardLayout({
             className="fixed inset-0 z-40 bg-black/60 md:hidden"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="fixed top-12 bottom-0 left-0 z-50 flex w-64 flex-col bg-[#0c0c0e] border-r border-white/[0.06] md:hidden">
+          <aside className="fixed top-14 bottom-0 left-0 z-50 flex w-64 flex-col bg-[#0c0c0e] border-r border-white/[0.06] md:hidden">
             {sidebarContent}
           </aside>
         </>
       )}
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto pt-12 md:pt-0">{children}</main>
+      <main className="flex-1 overflow-y-auto pt-14 md:pt-0">{children}</main>
     </div>
   );
 }
