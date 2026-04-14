@@ -12,7 +12,6 @@ import {
   LayoutDashboard,
   Settings,
   Activity,
-  FolderOpen,
   ChevronLeft,
   CreditCard,
   Key,
@@ -23,7 +22,6 @@ import {
 
 const sidebarItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
-  { href: "/dashboard/projects", label: "Projects", icon: FolderOpen },
   { href: "/dashboard/activity", label: "Activity", icon: Activity },
   { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
   { href: "/dashboard/keys", label: "API Keys", icon: Key },

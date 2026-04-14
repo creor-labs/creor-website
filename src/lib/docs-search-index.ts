@@ -24,6 +24,7 @@ export interface SidebarSection {
   title: string;
   icon: LucideIcon;
   category: "docs" | "api";
+  description: string;
   items: SidebarItem[];
 }
 
@@ -41,6 +42,7 @@ export const allSections: SidebarSection[] = [
     title: "Get Started",
     icon: Rocket,
     category: "docs",
+    description: "Install, set up, and get running in minutes",
     items: [
       { label: "Welcome", href: "/docs" },
       { label: "Installation", href: "/docs/installation" },
@@ -53,6 +55,7 @@ export const allSections: SidebarSection[] = [
     title: "Agent",
     icon: Brain,
     category: "docs",
+    description: "AI agents that write, plan, debug, and execute code",
     items: [
       { label: "Overview", href: "/docs/agent/overview" },
       { label: "Planning", href: "/docs/agent/planning" },
@@ -77,6 +80,7 @@ export const allSections: SidebarSection[] = [
     title: "Customizing",
     icon: Settings,
     category: "docs",
+    description: "Configuration, rules, skills, hooks, and plugins",
     items: [
       { label: "Configuration", href: "/docs/customizing/configuration" },
       { label: "Rules", href: "/docs/customizing/rules" },
@@ -91,6 +95,7 @@ export const allSections: SidebarSection[] = [
     title: "Models & Providers",
     icon: Cpu,
     category: "docs",
+    description: "Claude, GPT-4, Gemini, and 19+ provider integrations",
     items: [
       { label: "Overview", href: "/docs/providers/overview" },
       { label: "Creor Gateway", href: "/docs/providers/gateway" },
@@ -109,6 +114,7 @@ export const allSections: SidebarSection[] = [
     title: "Codebase Search",
     icon: Search,
     category: "docs",
+    description: "Semantic search and RAG-powered code understanding",
     items: [
       { label: "Overview", href: "/docs/rag/overview" },
       { label: "Indexing", href: "/docs/rag/indexing" },
@@ -119,6 +125,7 @@ export const allSections: SidebarSection[] = [
     title: "Cloud Agents",
     icon: Cloud,
     category: "docs",
+    description: "Run AI agents in the cloud for PRs and automation",
     items: [
       { label: "Overview", href: "/docs/cloud-agents/overview" },
       { label: "Setup", href: "/docs/cloud-agents/setup" },
@@ -133,6 +140,7 @@ export const allSections: SidebarSection[] = [
     title: "Dashboard & Account",
     icon: LayoutDashboard,
     category: "docs",
+    description: "Billing, API keys, usage, and team management",
     items: [
       { label: "Billing & Credits", href: "/docs/dashboard/billing" },
       { label: "API Keys", href: "/docs/dashboard/keys" },
@@ -146,6 +154,7 @@ export const allSections: SidebarSection[] = [
     title: "Troubleshooting",
     icon: LifeBuoy,
     category: "docs",
+    description: "Fix common issues with terminal, network, and setup",
     items: [
       { label: "Common Issues", href: "/docs/troubleshooting" },
       { label: "Terminal & Shell", href: "/docs/troubleshooting/terminal" },
@@ -158,6 +167,7 @@ export const allSections: SidebarSection[] = [
     title: "API Overview",
     icon: Code2,
     category: "api",
+    description: "Authentication, rate limits, and API best practices",
     items: [
       { label: "Overview", href: "/docs/api" },
       { label: "Authentication", href: "/docs/api/authentication" },
@@ -169,6 +179,7 @@ export const allSections: SidebarSection[] = [
     title: "Gateway API",
     icon: Zap,
     category: "api",
+    description: "Unified API for all LLM models with streaming",
     items: [
       { label: "Overview", href: "/docs/api/gateway/overview" },
       { label: "Supported Models", href: "/docs/api/gateway/models" },
@@ -179,6 +190,7 @@ export const allSections: SidebarSection[] = [
     title: "Cloud Agents API",
     icon: CloudCog,
     category: "api",
+    description: "Launch, manage, and monitor cloud agents via API",
     items: [
       "Overview", "List Agents", "Agent Status", "Agent Conversation",
       "List Artifacts", "Download Artifact", "Launch Agent", "Add Follow-up",
@@ -193,6 +205,7 @@ export const allSections: SidebarSection[] = [
     title: "Admin API",
     icon: ShieldCheck,
     category: "api",
+    description: "Team, audit logs, usage data, and spending limits",
     items: [
       "Overview", "Team Members", "Audit Logs", "Get Daily Usage Data",
       "Spending Data", "Get Usage Events Data", "User Spend Limit",
@@ -257,4 +270,52 @@ export function searchDocs(query: string): SearchEntry[] {
     .sort((a, b) => b.score - a.score);
 
   return scored.slice(0, 12).map(({ entry }) => entry);
+}
+
+/* ── Navigation helpers ── */
+
+interface FlatItem {
+  href: string;
+  label: string;
+  section: string;
+  category: "docs" | "api";
+}
+
+/** Flatten all items (including children) in display order for linear prev/next navigation */
+function buildFlatItems(): FlatItem[] {
+  const flat: FlatItem[] = [];
+  for (const section of allSections) {
+    for (const item of section.items) {
+      flat.push({ href: item.href, label: item.label, section: section.title, category: section.category });
+      if (item.children) {
+        for (const child of item.children) {
+          flat.push({ href: child.href, label: child.label, section: section.title, category: section.category });
+        }
+      }
+    }
+  }
+  return flat;
+}
+
+const flatItems = buildFlatItems();
+
+export function getFlattenedItems(): FlatItem[] {
+  return flatItems;
+}
+
+/** Find section by matching the breadcrumb string to a section title */
+export function getSectionByBreadcrumb(breadcrumb: string): SidebarSection | undefined {
+  const normalized = breadcrumb.split(/[>/]/).map((s) => s.trim()).filter(Boolean);
+  const sectionName = normalized[0] ?? breadcrumb;
+  return allSections.find((s) => s.title.toLowerCase() === sectionName.toLowerCase());
+}
+
+/** Get previous and next pages for a given href */
+export function getPrevNext(href: string): { prev?: FlatItem; next?: FlatItem } {
+  const idx = flatItems.findIndex((item) => item.href === href);
+  if (idx === -1) return {};
+  return {
+    prev: idx > 0 ? flatItems[idx - 1] : undefined,
+    next: idx < flatItems.length - 1 ? flatItems[idx + 1] : undefined,
+  };
 }
