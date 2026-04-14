@@ -442,7 +442,7 @@ export default function BillingPage() {
     }
   };
 
-  const handleSubscribe = async (planId: "starter" | "pro" | "team") => {
+  const handleSubscribe = async (planId: "byok" | "starter" | "pro") => {
     setSubscribingPlan(planId);
     try {
       const result = await api.subscribe(planId);
@@ -458,7 +458,7 @@ export default function BillingPage() {
     }
   };
 
-  const handleChangePlan = async (planId: "starter" | "pro" | "team") => {
+  const handleChangePlan = async (planId: "byok" | "starter" | "pro") => {
     if (!subscription?.active) {
       handleSubscribe(planId);
       return;
@@ -499,7 +499,7 @@ export default function BillingPage() {
     setChangingPlan(true);
     setConfirmAction(null);
     try {
-      const result = await api.changePlan(confirmAction.plan as "starter" | "pro" | "team");
+      const result = await api.changePlan(confirmAction.plan as "byok" | "starter" | "pro");
       const planLabel = confirmAction.plan.charAt(0).toUpperCase() + confirmAction.plan.slice(1);
       pushToast({
         variant: "info",
@@ -827,7 +827,7 @@ export default function BillingPage() {
                         {!isCurrent && !isFree && !isPending && (
                           <button
                             onClick={() => {
-                              handleChangePlan(plan.id as "starter" | "pro" | "team");
+                              handleChangePlan(plan.id as "byok" | "starter" | "pro");
                             }}
                             disabled={changingPlan || !!subscription?.pendingPlan || subscribingPlan === plan.id}
                             className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold transition-all disabled:opacity-50 ${

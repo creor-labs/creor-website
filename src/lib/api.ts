@@ -196,7 +196,7 @@ class ApiClient {
     }>("/api/billing/add-credits", { amount });
   }
 
-  async subscribe(plan: "starter" | "pro" | "team") {
+  async subscribe(plan: "byok" | "starter" | "pro") {
     return this.post<{
       checkoutUrl: string;
       plan: string;
@@ -218,7 +218,7 @@ class ApiClient {
     }>("/api/billing/subscription");
   }
 
-  async changePlan(plan: "starter" | "pro" | "team") {
+  async changePlan(plan: "byok" | "starter" | "pro") {
     return this.post<{
       success: boolean;
       direction: "upgrade" | "downgrade";

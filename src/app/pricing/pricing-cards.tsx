@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Check, ArrowRight, Zap, Sparkles, Key, Crown, Loader2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { FadeIn } from "@/components/fade-in";
+import { useAuth } from "@/lib/auth";
+import { api } from "@/lib/api";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
@@ -30,7 +32,6 @@ interface PlanDisplay {
   iconColor: string;
   features: string[];
   cta: string;
-  href: string;
   highlighted: boolean;
 }
 
@@ -44,7 +45,6 @@ const PLAN_CONFIG: Record<
     desc: string;
     badge: string | null;
     cta: string;
-    href: string;
     highlighted: boolean;
     sortOrder: number;
   }
@@ -55,7 +55,6 @@ const PLAN_CONFIG: Record<
     desc: "Get started with your own API keys",
     badge: null,
     cta: "Get Started Free",
-    href: "/waitlist",
     highlighted: false,
     sortOrder: 0,
   },
@@ -65,7 +64,6 @@ const PLAN_CONFIG: Record<
     desc: "Bring your own keys, zero limits",
     badge: null,
     cta: "Get BYOK",
-    href: "/login",
     highlighted: false,
     sortOrder: 1,
   },
@@ -75,7 +73,6 @@ const PLAN_CONFIG: Record<
     desc: "One key, all models, simple",
     badge: null,
     cta: "Get Starter",
-    href: "/login",
     highlighted: false,
     sortOrder: 2,
   },
@@ -85,7 +82,6 @@ const PLAN_CONFIG: Record<
     desc: "Maximum power, priority everything",
     badge: "Most popular",
     cta: "Get Pro",
-    href: "/login",
     highlighted: true,
     sortOrder: 3,
   },
@@ -95,11 +91,14 @@ const PLAN_CONFIG: Record<
     desc: "For teams that ship together",
     badge: null,
     cta: "Get Team",
-    href: "/login",
     highlighted: false,
     sortOrder: 4,
   },
 };
+
+/* ── Subscribable plan IDs ── */
+type SubscribablePlan = "byok" | "starter" | "pro";
+const SUBSCRIBABLE: Set<string> = new Set(["byok", "starter", "pro"]);
 
 /* ── Feature ID → display label mapping ── */
 
@@ -128,7 +127,6 @@ function buildFeatures(plan: ApiPlan): string[] {
     features.push("No usage limits or quotas");
     features.push("Direct provider billing");
   } else {
-    // Paid gateway plans — subscription = credits
     if (plan.price > 0) {
       features.push(`$${formatPrice(plan.price)}/mo in LLM credits`);
     }
@@ -137,7 +135,6 @@ function buildFeatures(plan: ApiPlan): string[] {
     }
   }
 
-  // Append mapped feature labels (skip "all_models" / "basic_models" — already covered)
   for (const f of plan.features) {
     if (f === "all_models" || f === "basic_models") continue;
     const label = FEATURE_LABELS[f];
@@ -170,7 +167,6 @@ function toDisplayPlans(apiPlans: ApiPlan[]): PlanDisplay[] {
         iconColor: cfg.iconColor,
         features: buildFeatures(p),
         cta: cfg.cta,
-        href: cfg.href,
         highlighted: cfg.highlighted,
       };
     })
@@ -186,6 +182,9 @@ function toDisplayPlans(apiPlans: ApiPlan[]): PlanDisplay[] {
 export function PricingCards() {
   const [plans, setPlans] = useState<PlanDisplay[] | null>(null);
   const [error, setError] = useState(!API_URL);
+  const [subscribingPlan, setSubscribingPlan] = useState<string | null>(null);
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (!API_URL) return;
@@ -207,6 +206,50 @@ export function PricingCards() {
     return () => { cancelled = true; };
   }, []);
 
+  const handleGetPlan = async (plan: PlanDisplay) => {
+    // Free plan → go to waitlist/download
+    if (plan.id === "free") {
+      router.push("/waitlist");
+      return;
+    }
+
+    // Paid plans — need auth
+    if (authLoading) return;
+
+    if (!user) {
+      // Not logged in → redirect to login with return URL
+      router.push(`/login?redirect=${encodeURIComponent(`/pricing?checkout=${plan.id}`)}`);
+      return;
+    }
+
+    if (!SUBSCRIBABLE.has(plan.id)) return;
+
+    // Logged in → call subscribe API to get Dodo checkout URL
+    setSubscribingPlan(plan.id);
+    try {
+      const result = await api.subscribe(plan.id as SubscribablePlan);
+      // Redirect to Dodo Payments checkout in same tab
+      window.location.href = result.checkoutUrl;
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to start checkout. Please try again.");
+    } finally {
+      setSubscribingPlan(null);
+    }
+  };
+
+  // Auto-trigger checkout if redirected back from login with ?checkout= param
+  useEffect(() => {
+    if (authLoading || !user || !plans) return;
+    const params = new URLSearchParams(window.location.search);
+    const checkoutPlan = params.get("checkout");
+    if (checkoutPlan && SUBSCRIBABLE.has(checkoutPlan)) {
+      // Clean up URL
+      window.history.replaceState({}, "", window.location.pathname);
+      const plan = plans.find((p) => p.id === checkoutPlan);
+      if (plan) handleGetPlan(plan);
+    }
+  }, [authLoading, user, plans]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* Loading skeleton */
   if (!plans && !error) {
     return (
@@ -214,26 +257,26 @@ export function PricingCards() {
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="flex h-[380px] flex-col rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6"
+            className="flex h-[420px] flex-col rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6"
           >
             <div className="mb-3 h-10 w-10 animate-pulse rounded-xl bg-white/[0.06]" />
             <div className="mb-1 h-5 w-20 animate-pulse rounded bg-white/[0.06]" />
             <div className="mb-5 h-4 w-36 animate-pulse rounded bg-white/[0.04]" />
             <div className="mb-6 h-10 w-24 animate-pulse rounded bg-white/[0.06]" />
-            <div className="mb-6 h-11 w-full animate-pulse rounded-xl bg-white/[0.04]" />
             <div className="mb-5 h-px bg-white/[0.06]" />
-            <div className="space-y-3">
+            <div className="flex-1 space-y-3">
               {Array.from({ length: 4 }).map((_, j) => (
                 <div key={j} className="h-4 w-full animate-pulse rounded bg-white/[0.04]" />
               ))}
             </div>
+            <div className="mt-6 h-12 w-full animate-pulse rounded-xl bg-white/[0.04]" />
           </div>
         ))}
       </div>
     );
   }
 
-  /* Error / empty — show a short message */
+  /* Error / empty */
   if (error || !plans || plans.length === 0) {
     return (
       <div className="mx-auto max-w-md rounded-2xl border border-white/[0.08] bg-white/[0.02] p-8 text-center">
@@ -305,19 +348,6 @@ export function PricingCards() {
               )}
             </div>
 
-            {/* CTA */}
-            <Link
-              href={plan.href}
-              className={`mb-6 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-[15px] font-semibold transition-all ${
-                plan.highlighted
-                  ? "bg-white text-black shadow-lg shadow-white/10 hover:bg-white/90 hover:shadow-white/20"
-                  : "border border-white/[0.1] bg-white/[0.04] text-white/80 hover:border-white/[0.2] hover:bg-white/[0.08]"
-              }`}
-            >
-              {plan.cta}
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-
             {/* Divider */}
             <div
               className={`mb-5 h-px ${
@@ -325,7 +355,7 @@ export function PricingCards() {
               }`}
             />
 
-            {/* Features */}
+            {/* Features — grows to fill, pushing CTA to bottom */}
             <ul className="flex-1 space-y-3">
               {plan.features.map((f) => (
                 <li
@@ -343,6 +373,26 @@ export function PricingCards() {
                 </li>
               ))}
             </ul>
+
+            {/* CTA — always pinned to bottom */}
+            <button
+              onClick={() => handleGetPlan(plan)}
+              disabled={subscribingPlan === plan.id}
+              className={`mt-6 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-[15px] font-semibold transition-all disabled:opacity-60 ${
+                plan.highlighted
+                  ? "bg-white text-black shadow-lg shadow-white/10 hover:bg-white/90 hover:shadow-white/20"
+                  : "border border-white/[0.1] bg-white/[0.04] text-white/80 hover:border-white/[0.2] hover:bg-white/[0.08]"
+              }`}
+            >
+              {subscribingPlan === plan.id ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  {plan.cta}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </>
+              )}
+            </button>
           </div>
         </FadeIn>
       ))}
