@@ -40,29 +40,27 @@ function CallbackContent() {
 
     (async () => {
       try {
+        let email = "";
         if (provider === "github") {
           const redirectUri = `${window.location.origin}/auth/callback?provider=github`;
-          await api.authGithub(code, redirectUri);
+          const res = await api.authGithub(code, redirectUri);
+          email = res.email;
         } else if (provider === "google") {
           const redirectUri = `${window.location.origin}/auth/callback?provider=google`;
-          await api.authGoogle(code, redirectUri);
+          const res = await api.authGoogle(code, redirectUri);
+          email = res.email;
         } else {
           setError("Unknown provider");
           return;
         }
-        await login();
 
-        // Early-access gate: check email before allowing access
-        try {
-          const me = await api.getMe();
-          if (ALLOWED_EMAILS.size > 0 && !ALLOWED_EMAILS.has(me.email.toLowerCase())) {
-            window.location.href = "/waitlist";
-            return;
-          }
-        } catch {
-          // If getMe fails, let the normal redirect handle it
+        // Early-access gate: check email BEFORE loading user context
+        if (ALLOWED_EMAILS.size > 0 && !ALLOWED_EMAILS.has(email.toLowerCase())) {
+          window.location.href = "/waitlist";
+          return;
         }
 
+        await login();
         window.location.href = stateRedirect;
       } catch (err: unknown) {
         setError(

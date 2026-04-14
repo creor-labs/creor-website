@@ -90,14 +90,14 @@ class ApiClient {
   // ── Auth ──
 
   async authGithub(code: string, redirectUri?: string) {
-    return this.post<{ token: string; userId: string; workspaceId: string }>(
+    return this.post<{ token: string; userId: string; workspaceId: string; email: string }>(
       "/api/auth/github/callback",
       { code, ...(redirectUri && { redirect_uri: redirectUri }) }
     );
   }
 
   async authGoogle(code: string, redirectUri: string) {
-    return this.post<{ token: string; userId: string; workspaceId: string }>(
+    return this.post<{ token: string; userId: string; workspaceId: string; email: string }>(
       "/api/auth/google/callback",
       { code, redirect_uri: redirectUri }
     );
