@@ -21,21 +21,22 @@ export function DocsSearchTrigger({ onOpen }: { onOpen: () => void }) {
 }
 
 export function DocsSearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  // Unmount inner content when closed — this resets all state automatically
+  if (!isOpen) return null;
+  return <DocsSearchModalInner onClose={onClose} />;
+}
+
+function DocsSearchModalInner({ onClose }: { onClose: () => void }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Reset state & focus when modal opens
-  const handleOpen = useCallback(() => {
-    setQuery("");
-    setSelected(0);
-    setTimeout(() => inputRef.current?.focus(), 50);
-  }, []);
-
+  // Focus input on mount
   useEffect(() => {
-    if (isOpen) handleOpen();
-  }, [isOpen, handleOpen]);
+    const timer = setTimeout(() => inputRef.current?.focus(), 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Derive search results from query (no effect needed)
   const searchResults = searchDocs(query);
@@ -68,19 +69,17 @@ export function DocsSearchModal({ isOpen, onClose }: { isOpen: boolean; onClose:
     }
   };
 
-  // Global cmd+K listener
+  // Global cmd+K listener to close
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        if (isOpen) onClose();
+        onClose();
       }
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
+  }, [onClose]);
 
   return (
     <div className="fixed inset-0 z-[60] flex items-start justify-center pt-[15vh]">
