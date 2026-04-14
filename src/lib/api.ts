@@ -291,11 +291,16 @@ class ApiClient {
         amount: number;
         currency: string;
         status: string;
+        ddOrderId: string | null;
         timeCreated: string;
       }>;
       page: number;
       limit: number;
     }>(`/api/billing/payments?page=${page}&limit=${limit}`);
+  }
+
+  async getInvoiceUrl(paymentId: string) {
+    return this.get<{ invoiceUrl: string }>(`/api/billing/payments/${paymentId}/invoice`);
   }
 
   // ── API Keys ──

@@ -19,6 +19,8 @@ import {
   ChevronDown,
   ExternalLink,
   Check,
+  Download,
+  Loader2,
 } from "lucide-react";
 
 // ── Toast System ──
@@ -246,6 +248,7 @@ export default function BillingPage() {
   const [subscribingPlan, setSubscribingPlan] = useState<string | null>(null);
   const [resetting, setResetting] = useState(false);
   const [expandedPayment, setExpandedPayment] = useState<string | null>(null);
+  const [downloadingInvoice, setDownloadingInvoice] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"billing" | "invoices">("billing");
   const [showPlanModal, setShowPlanModal] = useState(false);
   const [showLimitModal, setShowLimitModal] = useState(false);
@@ -1266,6 +1269,32 @@ export default function BillingPage() {
                                 )}
                               </div>
                             </div>
+                            {p.ddOrderId && p.status === "captured" && (
+                              <div className="mt-3 border-t border-border pt-3">
+                                <button
+                                  onClick={async () => {
+                                    setDownloadingInvoice(p.id);
+                                    try {
+                                      const { invoiceUrl } = await api.getInvoiceUrl(p.id);
+                                      window.open(invoiceUrl, "_blank");
+                                    } catch {
+                                      pushToast({ variant: "error", title: "Invoice not available", description: "The invoice may not be ready yet. Try again later." });
+                                    } finally {
+                                      setDownloadingInvoice(null);
+                                    }
+                                  }}
+                                  disabled={downloadingInvoice === p.id}
+                                  className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted disabled:opacity-50"
+                                >
+                                  {downloadingInvoice === p.id ? (
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                  ) : (
+                                    <Download className="h-3 w-3" />
+                                  )}
+                                  Download Invoice
+                                </button>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
