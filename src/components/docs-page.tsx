@@ -3,7 +3,6 @@ import { DocsBreadcrumbNav } from "@/components/docs/docs-breadcrumb-nav";
 import { DocsFloatingToc } from "@/components/docs/docs-floating-toc";
 import { DocsPrevNextNav } from "@/components/docs/docs-prev-next-nav";
 import { DocsNavPill } from "@/components/docs/docs-nav-pill";
-import { DocsSectionNav } from "@/components/docs/docs-section-nav";
 
 interface TocItem {
   label: string;
@@ -33,11 +32,10 @@ export function DocsPage({ breadcrumb, title, description, toc, children }: Docs
 
         <article>{children}</article>
 
-        <DocsSectionNav breadcrumb={breadcrumb} />
         <DocsPrevNextNav />
       </div>
 
-      {toc && toc.length > 0 && <DocsFloatingToc toc={toc} />}
+      <DocsFloatingToc toc={toc ?? []} breadcrumb={breadcrumb} />
       <DocsNavPill breadcrumb={breadcrumb} />
     </>
   );
