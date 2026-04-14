@@ -184,22 +184,24 @@ function toDisplayPlans(apiPlans: ApiPlan[]): PlanDisplay[] {
 
 export function PricingCards() {
   const [plans, setPlans] = useState<PlanDisplay[] | null>(null);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(!API_URL);
 
   useEffect(() => {
-    if (!API_URL) {
-      setError(true);
-      return;
-    }
+    if (!API_URL) return;
+
+    let cancelled = false;
     fetch(`${API_URL}/api/billing/plans`)
       .then((r) => {
         if (!r.ok) throw new Error("Failed to fetch plans");
         return r.json();
       })
       .then((data: { plans: ApiPlan[] }) => {
-        setPlans(toDisplayPlans(data.plans));
+        if (!cancelled) setPlans(toDisplayPlans(data.plans));
       })
-      .catch(() => setError(true));
+      .catch(() => {
+        if (!cancelled) setError(true);
+      });
+    return () => { cancelled = true; };
   }, []);
 
   /* Loading skeleton */
