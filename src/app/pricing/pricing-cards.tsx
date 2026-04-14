@@ -7,6 +7,7 @@ import type { LucideIcon } from "lucide-react";
 import { FadeIn } from "@/components/fade-in";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
+const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
 /* ── Types ── */
 
@@ -190,7 +191,9 @@ export function PricingCards() {
     if (!API_URL) return;
 
     let cancelled = false;
-    fetch(`${API_URL}/api/billing/plans`)
+    fetch(`${API_URL}/api/billing/plans`, {
+      headers: ANON_KEY ? { apikey: ANON_KEY } : {},
+    })
       .then((r) => {
         if (!r.ok) throw new Error("Failed to fetch plans");
         return r.json();
