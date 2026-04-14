@@ -60,7 +60,7 @@ export default function WaitlistPage() {
     return (
       <div className="relative min-h-screen overflow-hidden bg-background">
         {/* Full-page background */}
-        <svg className="pointer-events-none absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg">
+        <svg className="pointer-events-none absolute inset-0 hidden h-full w-full sm:block" xmlns="http://www.w3.org/2000/svg">
           <defs>
             {/* Grid pattern — visible */}
             <pattern id="wl-grid" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
@@ -295,14 +295,14 @@ export default function WaitlistPage() {
         </svg>
 
         {/* Blurred orbs */}
-        <div className="pointer-events-none absolute top-[10%] left-[5%] h-[400px] w-[400px] rounded-full bg-indigo-500/[0.07] blur-[130px]" />
-        <div className="pointer-events-none absolute top-[5%] right-[8%] h-[300px] w-[300px] rounded-full bg-blue-500/[0.05] blur-[110px]" />
-        <div className="pointer-events-none absolute bottom-[10%] right-[5%] h-[350px] w-[350px] rounded-full bg-indigo-500/[0.04] blur-[110px]" />
-        <div className="pointer-events-none absolute bottom-[15%] left-[15%] h-[280px] w-[280px] rounded-full bg-blue-500/[0.03] blur-[90px]" />
+        <div className="pointer-events-none absolute top-[10%] left-[5%] h-[200px] w-[200px] rounded-full bg-indigo-500/[0.07] blur-[80px] sm:h-[400px] sm:w-[400px] sm:blur-[130px]" />
+        <div className="pointer-events-none absolute top-[5%] right-[8%] h-[150px] w-[150px] rounded-full bg-blue-500/[0.05] blur-[70px] sm:h-[300px] sm:w-[300px] sm:blur-[110px]" />
+        <div className="pointer-events-none absolute bottom-[10%] right-[5%] hidden rounded-full bg-indigo-500/[0.04] blur-[110px] sm:block sm:h-[350px] sm:w-[350px]" />
+        <div className="pointer-events-none absolute bottom-[15%] left-[15%] hidden rounded-full bg-blue-500/[0.03] blur-[90px] sm:block sm:h-[280px] sm:w-[280px]" />
 
         <Navbar />
 
-        <main className="relative z-10 px-6 pt-28 pb-20">
+        <main className="relative z-10 px-4 pt-24 pb-16 sm:px-6 sm:pt-28 sm:pb-20">
           {/* Hero — full width */}
           <div className="mx-auto max-w-[700px] text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/[0.06] px-4 py-1.5">
@@ -311,20 +311,20 @@ export default function WaitlistPage() {
                 Launching soon
               </span>
             </div>
-            <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 text-3xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               Be the first to try{" "}
               <span className="bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">
                 Creor
               </span>
             </h1>
-            <p className="mx-auto mt-5 max-w-lg text-[18px] leading-relaxed text-white/40">
+            <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-white/40 sm:mt-5 sm:text-[18px]">
               The AI-native code editor with specialized agents, BYOK support,
               and full control over every action. Join the waitlist.
             </p>
           </div>
 
           {/* Waitlist form — full width contained */}
-          <div className="mx-auto mt-10 max-w-[540px]">
+          <div className="mx-auto mt-8 max-w-[540px] sm:mt-10">
             <WaitlistForm />
           </div>
 
@@ -334,7 +334,7 @@ export default function WaitlistPage() {
           </div>
 
           {/* Three-column features */}
-          <div className="mx-auto mt-16 grid max-w-[1100px] gap-5 md:grid-cols-3">
+          <div className="mx-auto mt-12 grid max-w-[1100px] gap-4 sm:mt-16 sm:gap-5 md:grid-cols-3">
             {/* Early bird */}
             <div className="overflow-hidden rounded-2xl border border-amber-500/20 bg-[#141416]">
               <div className="flex items-center gap-2 border-b border-amber-500/10 bg-amber-500/[0.06] px-4 py-2">

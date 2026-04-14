@@ -59,7 +59,7 @@ export function WaitlistForm() {
 
   if (status === "success") {
     return (
-      <div className="mt-10 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.05] p-8 text-center">
+      <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.05] p-6 text-center sm:p-8">
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20">
           <Check className="h-6 w-6 text-emerald-400" />
         </div>
@@ -76,20 +76,20 @@ export function WaitlistForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-10">
-      <div className="flex gap-3">
+    <form onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-3 sm:flex-row">
         <input
           type="email"
           required
           placeholder="you@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 rounded-xl border border-white/[0.10] bg-white/[0.04] px-4 py-3.5 text-[16px] text-white placeholder:text-white/25 outline-none transition-colors focus:border-indigo-500/40 focus:bg-white/[0.06]"
+          className="w-full rounded-xl border border-white/[0.10] bg-white/[0.04] px-4 py-3.5 text-[16px] text-white placeholder:text-white/25 outline-none transition-colors focus:border-indigo-500/40 focus:bg-white/[0.06] sm:flex-1"
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-[16px] font-semibold text-black transition-all hover:bg-white/90 active:scale-[0.98] disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-[16px] font-semibold text-black transition-all hover:bg-white/90 active:scale-[0.98] disabled:opacity-60 sm:w-auto"
         >
           {status === "loading" ? (
             <Loader2 className="h-4 w-4 animate-spin" />

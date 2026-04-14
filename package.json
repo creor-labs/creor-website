@@ -7,7 +7,9 @@
     "build": "bash scripts/generate-headers.sh && next build && find ./out -name '*.map' -delete",
     "sentry:sourcemaps": "sentry-cli sourcemaps upload --release=$NEXT_PUBLIC_APP_VERSION ./out",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "remotion:preview": "remotion preview remotion/index.ts",
+    "remotion:render": "remotion render remotion/index.ts CreorIDEDemo out/creor-ide-demo.mp4 --codec h264"
   },
   "dependencies": {
     "@sentry/react": "^10.47.0",
@@ -25,6 +27,8 @@
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
+    "@remotion/cli": "^4.0.448",
+    "@remotion/renderer": "^4.0.448",
     "@sentry/cli": "^2.42.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
@@ -32,6 +36,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "remotion": "^4.0.448",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
