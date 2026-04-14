@@ -92,12 +92,12 @@ export default function DashboardOverview() {
 
       {/* ── Plan Banner ── */}
       <div className="mb-6 rounded-xl border border-border bg-card">
-        <div className="flex items-center justify-between p-5">
-          <div className="flex items-center gap-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-foreground/[0.08]">
+        <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-foreground/[0.08]">
               <Sparkles className="h-5 w-5 text-foreground/60" />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2.5">
                 <span className="text-sm font-semibold">
                   {data?.plan ?? "Free"} Plan
@@ -110,7 +110,7 @@ export default function DashboardOverview() {
               </div>
               {data?.monthlyPct != null && (
                 <div className="mt-2 flex items-center gap-3">
-                  <div className="h-1.5 w-40 overflow-hidden rounded-full bg-foreground/[0.08]">
+                  <div className="h-1.5 w-24 overflow-hidden rounded-full bg-foreground/[0.08] sm:w-40">
                     <div
                       className="h-full rounded-full bg-foreground/50 transition-all"
                       style={{ width: `${Math.min(data.monthlyPct, 100)}%` }}
@@ -118,9 +118,11 @@ export default function DashboardOverview() {
                   </div>
                   <span className="text-[11px] text-muted-foreground">
                     {data.monthlyPct}% used
-                    {data.monthlyCurrent != null && data.monthlyMax != null && (
-                      <> &middot; {formatAmount(data.monthlyCurrent)} / {formatAmount(data.monthlyMax)}</>
-                    )}
+                    <span className="hidden sm:inline">
+                      {data.monthlyCurrent != null && data.monthlyMax != null && (
+                        <> &middot; {formatAmount(data.monthlyCurrent)} / {formatAmount(data.monthlyMax)}</>
+                      )}
+                    </span>
                   </span>
                 </div>
               )}
@@ -129,8 +131,8 @@ export default function DashboardOverview() {
 
           {data?.nextPlan && (
             <Link
-              href="/dashboard/billing"
-              className="flex items-center gap-2 rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90"
+              href="/pricing"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90 sm:w-auto"
             >
               Upgrade to {data.nextPlan.name}
               <ArrowRight className="h-3.5 w-3.5" />

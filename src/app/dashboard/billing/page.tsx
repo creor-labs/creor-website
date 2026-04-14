@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
+import Link from "next/link";
 import { api } from "@/lib/api";
 import { useBillingRealtime } from "@/hooks/use-billing-realtime";
 import {
@@ -912,8 +913,8 @@ export default function BillingPage() {
       {activeTab === "billing" && (
         <div className="space-y-6">
           {/* Plan Status Card */}
-          <div className="rounded-xl border border-border bg-card p-6">
-            <div className="flex items-start justify-between">
+          <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <h2 className="text-sm font-medium text-muted-foreground">Your plan</h2>
                 <div className="mt-1 flex items-center gap-2.5">
@@ -931,12 +932,12 @@ export default function BillingPage() {
                   )}
                 </div>
               </div>
-              <button
-                onClick={() => setShowPlanModal(true)}
-                className="cursor-pointer rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+              <Link
+                href="/pricing"
+                className="shrink-0 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
               >
-                Adjust plan
-              </button>
+                Change plan
+              </Link>
             </div>
 
             {/* Monthly Usage — based on plan's included limit, not spend limit */}
