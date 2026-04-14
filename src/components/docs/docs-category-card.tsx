@@ -6,7 +6,8 @@ export function DocsCategoryCard({ section }: { section: SidebarSection }) {
     (count, item) => count + 1 + (item.children?.length ?? 0),
     0
   );
-  const firstHref = section.items[0]?.href ?? "/docs";
+  // Skip /docs (the hub page itself) and link to the first real article
+  const firstHref = section.items.find((i) => i.href !== "/docs")?.href ?? section.items[0]?.href ?? "/docs";
   const previewItems = section.items.slice(0, 4);
 
   return (
