@@ -45,7 +45,7 @@ function DepNode({ data }: NodeProps) {
         className="!bg-transparent !border-0 !w-0 !h-0"
       />
       <div
-        className={`font-mono text-[11px] font-medium transition-colors duration-700 ${
+        className={`font-mono text-[12px] font-medium transition-colors duration-700 ${
           active
             ? "text-indigo-300/90"
             : isRoot
@@ -117,43 +117,43 @@ const initialNodes: Node[] = [
   {
     id: "useAuth",
     type: "dep",
-    position: { x: 200, y: 0 },
+    position: { x: 150, y: 0 },
     data: { label: "useAuth.ts", type: "root" },
   },
   {
     id: "session",
     type: "dep",
-    position: { x: 60, y: 100 },
+    position: { x: 50, y: 80 },
     data: { label: "session.ts", type: "child" },
   },
   {
     id: "token",
     type: "dep",
-    position: { x: 340, y: 100 },
+    position: { x: 250, y: 80 },
     data: { label: "token.ts", type: "child" },
   },
   {
     id: "db",
     type: "dep",
-    position: { x: 0, y: 200 },
+    position: { x: 0, y: 160 },
     data: { label: "db.ts", type: "leaf" },
   },
   {
     id: "redis",
     type: "dep",
-    position: { x: 130, y: 200 },
+    position: { x: 100, y: 160 },
     data: { label: "redis.ts", type: "leaf" },
   },
   {
     id: "crypto",
     type: "dep",
-    position: { x: 280, y: 200 },
+    position: { x: 210, y: 160 },
     data: { label: "crypto.ts", type: "leaf" },
   },
   {
     id: "jwt",
     type: "dep",
-    position: { x: 410, y: 200 },
+    position: { x: 310, y: 160 },
     data: { label: "jwt.ts", type: "leaf" },
   },
 ];
@@ -224,7 +224,7 @@ function ExploreGraphInner() {
     const el = graphRef.current;
     if (!el) return;
     const ro = new ResizeObserver(() => {
-      fitView({ padding: 0.2, duration: 200 });
+      fitView({ padding: 0.15, duration: 200 });
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -328,7 +328,7 @@ function ExploreGraphInner() {
     <div ref={containerRef} className="w-full">
       <div
         ref={graphRef}
-        className="pointer-events-none h-[200px] w-full overflow-hidden rounded-md sm:h-[240px]"
+        className="pointer-events-none h-[180px] w-full overflow-hidden rounded-md sm:h-[240px]"
       >
         <ReactFlow
           nodes={nodes}
@@ -336,7 +336,7 @@ function ExploreGraphInner() {
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           fitView
-          fitViewOptions={{ padding: 0.2, minZoom: 0.3, maxZoom: 1 }}
+          fitViewOptions={{ padding: 0.15, minZoom: 0.8, maxZoom: 1.5 }}
           panOnDrag={false}
           zoomOnScroll={false}
           zoomOnPinch={false}
