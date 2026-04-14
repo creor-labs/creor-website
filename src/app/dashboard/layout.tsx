@@ -42,11 +42,6 @@ export default function DashboardLayout({
   const { user, loading, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Close mobile nav on route change
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
-
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/login");
@@ -80,6 +75,7 @@ export default function DashboardLayout({
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => setMobileOpen(false)}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] transition-all",
                 isActive
